@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "MgOpen Cosmetica";
+    src: url("fonts/mgopencosmeticaregular.ttf");
+}
+
+body, .box-source {
+    font-family: "Optima", "Optima LT Std", "MgOpen Cosmetica";
+}

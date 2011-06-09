@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "Junicode";
+    src: url("fonts/junicoderegular.ttf");
+}
+
+body {
+    font-family: "Junicode";
+}
+
+.box-source {
+    font-family: "Junicode"; 
+}

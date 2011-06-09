@@ -457,7 +457,7 @@ function newFile() {
 }
 
 function setFont(font) {
-
+    $("#thefont").attr("href", "themes/font-"+font+".css");
 }
 
 function setTheme(theme) {

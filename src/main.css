@@ -1,26 +1,3 @@
-/* FONTS */
-
-@font-face {
-    font-family: "Gentium Book Basic";
-    src: url("fonts/genbkbasr.ttf");
-}
-
-@font-face {
-    font-family: "MgOpen Cosmetica";
-    src: url("fonts/mgopencosmeticaregular.ttf");
-}
-
-@font-face {
-    font-family: "Ubuntu";
-    src: url("fonts/ubunturegular.ttf");
-}
-
-@font-face {
-    font-family: "Junicode";
-    src: url("fonts/junicoderegular.ttf");
-}
-
-
 /* MAIN */
 
 html {
