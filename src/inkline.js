@@ -38,6 +38,13 @@ function pickFile() {
     });
 }
 
+// BLOCK QUERIES
+
+function getActiveBlock() {
+    node = window.getSelection().getRangeAt(0).endContainer;
+    return $($(node).parents(".box-container").get(0));
+}
+
 // BLOCK MANIPULATION
 
 insertEmptyBlock = function(block) {
@@ -128,6 +135,10 @@ function editBlock(block) {
     outputElt = $(block).find(".box-output").get(0);   
     $(sourceElt).removeClass("hidden");
     $(outputElt).addClass("hidden");
+    r = window.getSelection().getRangeAt(0);
+    r.setStart($(sourceElt).get(0),0);
+    r.collapse(true);
+    $(sourceElt).focus();
 }
 
 function displayBlock(block) {
@@ -146,6 +157,7 @@ function blockInEditMode(block) {
 function toggleBlock(block) {
     if(blockInEditMode(block)) {
 	blocks = processBlock(block);
+	console.log("toggleBlock: transforming " + blocks.length + " blocks");
 	for(i = 0; i < blocks.length; i++) {
             transformBlock(blocks[i]);
 	}
@@ -231,6 +243,15 @@ function handleKeydown(e) {
 	    return false;
 	case "ctrl+t":
 	    transformAll();
+	    return false;
+	case "ctrl+return":
+	    console.log("ctrl+enter pressed");
+	    b = getActiveBlock();
+	    if(b != undefined) {
+		nb = insertAfterBlock("",b);
+		toggleBlock(b);
+		editBlock(nb);
+	    }
 	    return false;
     }
     return true;
