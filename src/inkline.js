@@ -215,55 +215,24 @@ function handleKeydown(e) {
     // first handle special characters
     str = keyboardEventToString(e);
     switch(str) {
-	case "alt+up":
-	    moveActiveUp();
+	case "ctrl+s":
+        case "cmd+s":
+        case "f5":
+	    saveFile();
 	    return false;
-	case "alt+down":
-	    moveActiveDown();
-	    return false;
-	case "ctrl+up":
-	    activeBlock.prev().before(activeBlock);
-	    return false;
-	case "ctrl+down":
-	    activeBlock.next().after(activeBlock);
-	    return false;
-	case "ctrl+backspace":
-	    deleteBlock();
-	    return false;
-	case "left":
-	    moveCursorLeft();
-	    return false;
-	case "right":
-	    moveCursorRight();
-	    return false;
-	case "up":
-	    moveCursorUp();
-	    return false;
-	case "down":
-	    moveCursorDown();
-	    return false;
-        case "backspace":
-	    backspace();
-	    return false;
-	case "f4":
-		saveNow();
-		return false;
 	case "f9":
-		loadNow();
+	    openFile();
 	    return false;
-	case "return":
-	    b = addEmptyBlockAfter($($(".active").get(0)));
-	    changeActive(b);
+	case "f11":
+	    toggleFullscreen();
+	    return false;
+	case "esc":
+	    toggleMenu("root");
+	    return false;
+	case "ctrl+t":
+	    transformAll();
 	    return false;
     }
-    // for chrome
-    /*
-    if(jQuery.browser.webkit) {
-	if(e.which != 0) {
-	    c = String.fromCharCode(e.which);
-	    insertCharacter(c);
-	}
-    }*/
     return true;
 }
 
@@ -276,13 +245,7 @@ function handleKeypress(e) {
     return false;
 }
 
-//$(document).keydown(handleKeydown);
-//$(document).keypress(handleKeypress);
-//document.onkeypress = handleKeypress;
-//$(document).bind("keydown","up",function(){moveActiveUp();return false;});
-//$(document).bind("keydown","down",function(){alert("got here");return false;});
-//$(document).keypress(showChar);
-
+$(document).keydown(handleKeydown);
 
 
 // LOAD AND SAVE
@@ -411,6 +374,14 @@ function showMenu(key) {
     $("#menu").center();
 }
 
+function toggleMenu() {
+    if($("#menu").css('display') == "none") {
+	showMenu('root');
+    } else {
+	$('#menu').hide();
+    }
+}
+
 // MENU COMMANDS
 
 function openFile() {
@@ -476,9 +447,7 @@ $(document).ready(function() {
     //cUI.setIcon().title = "Qute";
     //cUI.setIcon().imageSpec = "icon-512.png";
     loadDocumentFromText("Welcome to **Qute**$^+$!\n");
-    cHotkey.register("accel-s",saveFile,"hotkey-save");
-    cHotkey.register("accel-f",toggleFullscreen,"hotkey-fullscreen");
-    cHotkey.register("accel-e",function() { $('#menu').show(); },"hotkey-show menu");
+
     $("#notify-area").hide();
     window.resizeTo(960,650);
 });
