@@ -52,3 +52,9 @@ body {
     color: #555;
     background-color: rgba(255,255,255,0.5);
 }
+
+/* BODY TEXT */
+
+.column a {
+    color: #c40000;
+}

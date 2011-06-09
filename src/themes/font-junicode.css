@@ -10,3 +10,9 @@ body {
 .box-source {
     font-family: "Junicode"; 
 }
+
+/* BODY TEXT */
+
+.column code {
+    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono";
+}
