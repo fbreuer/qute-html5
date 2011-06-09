@@ -25,7 +25,7 @@
 
 <body spellcheck="false">
 
-<a id="menuanchor" onclick="$('#menu').show();">Q<!--<img src="img/icon-36.png"></img>--></a>
+<a id="menuanchor" onclick="showMenu('root');">Q<!--<img src="img/icon-36.png"></img>--></a>
 
 <div id="scroll-area">
 <div class="column">
@@ -36,11 +36,30 @@
 <div id="notify-area">
 </div>
 
-<div id="menu" onclick="$('#menu').hide();">
- <a onclick="newFile();">new file</a>
- <a onclick="openFile();">open file</a>
- <a onclick="saveFile();">save file</a>
- <a onclick="toggleFullscreen();">fullscreen</a>
+<div id="menu" onclick="$('#menu').hide();" style="display:none;">
+  <div class="menu-page" id="menu-root" style="display:none;">
+    <a onclick="newFile();">new file</a>
+    <a onclick="openFile();">open file</a>
+    <a onclick="saveFile();">save file</a>
+    <a onclick="toggleFullscreen();">fullscreen</a>
+    <a onclick="showMenu('config');event.stopPropagation();">config</a>
+  </div>
+  <div class="menu-page" id="menu-config" style="display:none;">
+    <a onclick="showMenu('theme');event.stopPropagation();">themes</a>
+    <a onclick="showMenu('font');event.stopPropagation();">fonts</a>
+  </div>
+  <div class="menu-page" id="menu-font" style="display:none;">
+    <a onclick="setFont('cosmetica');">MgOpen Cosmetica</a>
+    <a onclick="setFont('ubuntu');">Ubuntu</a>
+    <a onclick="setFont('gentium');">Gentium Book Basic</a>
+    <a onclick="setFont('junicode');">Junicode</a>
+  </div>
+  <div class="menu-page" id="menu-theme" style="display:none;">
+    <a onclick="setTheme('dark');">Dark</a>
+    <a onclick="setTheme('paper');">Paper</a>
+    <a onclick="setTheme('wood');">Wood</a>
+    <a onclick="setTheme('qute');">Qute</a>
+  </div>
 </div>
 
 </body>

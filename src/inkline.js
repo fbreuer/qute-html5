@@ -377,6 +377,14 @@ String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
 }
 
+jQuery.fn.center = function () {
+    this.css("position","absolute");
+    this.css("top", ( $(window).height() - this.outerHeight() ) / 2 + $(window).scrollTop() + "px");
+    this.css("left", ( $(window).width() - this.outerWidth() ) / 2 + $(window).scrollLeft() + "px");
+    return this;
+}
+
+
 // MENU
 
 /*var menuTest = cMenu.Menu({
@@ -395,6 +403,15 @@ String.prototype.trim = function () {
 	})
     ]
 });*/
+
+function showMenu(key) {
+    $("#menu").show();
+    $(".menu-page").hide();
+    $("#menu-"+key).show();
+    $("#menu").center();
+}
+
+// MENU COMMANDS
 
 function openFile() {
     console.log("Open File");
@@ -434,7 +451,16 @@ function saveFile() {
 }
 
 function newFile() {
-    cUI.setIcon();
+    filename = "";
+    $(".column").empty();
+    appendEmptyBlock();
+}
+
+function setFont(font) {
+
+}
+
+function setTheme(theme) {
 }
 
 // NOTIFY
