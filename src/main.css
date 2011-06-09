@@ -5,8 +5,6 @@ html {
 }
 
 body {
-  font-family: "MgOpen Cosmetica"; /*, "Optima", "Optima LT Std", "Segoe UI",  Calibri;*/
-  background-image: url("img/black-background-2000.png");
   background-position: 50% 0%;
   background-attachment: fixed;
   padding: 0;
@@ -22,22 +20,15 @@ body {
 .box, .box-source, .box-output, .box-button {
   padding: 0px;
   margin: 1em;
-  color: white;
   background: transparent;
-  text-shadow: #000 2px 2px 4px, #000 2px 2px 4px, #000 2px 2px 4px;
-  /*text-shadow: #000 1px 1px 4px, #000 -1px 1px 4px, #000 1px -1px 4px, #000 -1px -1px 4px;*/
-  /*box-shadow: #fff 0px 0px 4px;*/
 }
 
-.box-output {
+.box-output, .box-source {
     font-size: 12pt;
 }
 
 .box-source {
     white-space: pre-wrap;
-    font-family: "MgOpen Cosmetica"; /*"Optima", "Optima LT Std", "MgOpen Cosmetica", Monaco, Consolas, "Bitstream Vera Sans Monospace", mono;*/
-    font-size: 12pt;
-    border-left: 1px solid white;
     padding-left: 20px !important;
     outline: 0px solid transparent;
 }
@@ -58,10 +49,6 @@ body {
   width: 20px;
   margin: 0;
   padding: 0;
-}
-
-.active .box-button {
-    text-shadow: #fff 0px 0px 6px, #fff 0px 0px 4px;
 }
 
 .box-source, .box-output {
@@ -89,83 +76,29 @@ body {
     overflow-y: scroll;
 }
 
-/* PANEL */
-
-#panelslider {
-    background-color: #a00a;
-    padding-top: 5px;
-    padding-left: 10px;
-}
-
-#paneltab{
-    position: relative;
-    padding: 5px 10px 5px 10px;
-    top: 0;
-}
-
-#panelslider input {
-    background: transparent;
-    width: 30ex;
-    border: 0;
-    padding: 3px;
-    color: white;
-    text-shadow: #000 2px 2px 4px, #000 2px 2px 4px, #000 2px 2px 4px;
-}
-
-#panel {
-    background-color: rgba(0,0,0,0.3);
-    position: absolute;
-    color: #fff;
-    text-shadow: #000 2px 2px 4px, #000 2px 2px 4px, #000 2px 2px 4px;
-    top: 0;
-}
-
-#panel a {
-    cursor: pointer;
-}
-
 /* NOTIFY AREA */
 
 #notify-area {
-    /*width: 80ex;*/
     padding: 10px;
-    background-color: rgba(0,0,0,0.8);
     position: absolute;
     bottom: 50px;
     left: 50px;
     right: 50px;
-    color: white;
-    text-shadow: #000 2px 2px 4px, #000 2px 2px 4px, #000 2px 2px 4px;
-    box-shadow: 0px 0px 4px #fff;
-    border-radius: 5px;
 }
 
 /* MENU */
 
 #menu {
     position: absolute;
-    /*top: 200px;
-    left: 200px;
-    right: 200px;*/
     width: 400px;
     padding: 30px;
-    background-color: rgba(0,0,0,0.8);
-    box-shadow: 0px 0px 4px #fff;    
 }
 
 #menu a {
     display: block;
-    color: #fff;
     cursor: pointer;
     padding: 5px;
     margin: auto;
-    font-variant: small-caps;
-    text-align: center;
-    text-shadow: #000 2px 2px 4px, #000 2px 2px 4px, #000 2px 2px 4px;
-}
-
-#menu a:hover {
-    text-shadow: #fff 0px 0px 4px;
 }
 
 #menuanchor {
@@ -174,6 +107,4 @@ body {
     top: 5px;
     left: 5px;
     padding: 5px;
-    color: white;
-    background-color: rgba(0,0,0,0.5);
 }

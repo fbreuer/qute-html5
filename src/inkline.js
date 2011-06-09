@@ -461,6 +461,7 @@ function setFont(font) {
 }
 
 function setTheme(theme) {
+    $("#thetheme").attr("href", "themes/theme-"+theme+".css");
 }
 
 // NOTIFY

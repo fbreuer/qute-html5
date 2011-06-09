@@ -1,0 +1,53 @@
+/* BACKGROUND AND FOREGROUND */
+
+body {
+  background-image: url("/img/cute-background-2000.png");
+}
+
+.box, .box-source, .box-output, .box-button {
+  color: white;
+}
+
+.box-source {
+    border-left: 1px solid white;
+}
+
+/* TEXT: PINK/WHITE GLOW */
+
+.box, .box-source, .box-output, .box-button, #notify-area, #menu a {
+    text-shadow: #f7f 0px 0px 4px, #fff 0px 0px 2px;
+}
+
+/* TEXT: STRONG PINK/WHITE GLOW */
+
+.active .box-button, #menu a:hover {
+    text-shadow:  #f7f 0px 0px 4px, #f7f 0px 0px 4px, #fff 0px 0px 2px, #fff 0px 0px 2px;
+}
+
+
+/* NOTIFY AREA */
+
+#notify-area {
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    box-shadow: 0px 0px 4px #fff;
+    border-radius: 5px;
+}
+
+/* MENU */
+
+#menu {
+    background-color: rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 4px #fff;    
+}
+
+#menu a {
+    color: #fff;
+    font-variant: small-caps;
+    text-align: center;
+}
+
+#menuanchor {
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+}
