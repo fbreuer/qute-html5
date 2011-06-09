@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <script type="text/javascript" src="lib/jquery-1.5.1.js"></script>
+    <script type="text/javascript" src="lib/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	   MathJax.Hub.Config({
+	        extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbol.js", "TeX/noErrors.js"],
+	        jax: ["input/TeX", "output/MathML"],
+	        tex2jax: {
+	            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	            processEscapes: true,
+	        },
+			skipStartupTypeset: true,
+	        "HTML-CSS": { availableFonts: ["STIX","TeX"] }
+	    });
+	</script>
+	<script type="text/javascript" src="lib/showdown.js"></script>
+    <script type="text/javascript" src="inkline.js"></script>
+    <title>Outliner</title>
+</head>
+
+<body spellcheck="false">
+
+<a id="menuanchor" onclick="$('#menu').show();">Q<!--<img src="img/icon-36.png"></img>--></a>
+
+<div id="scroll-area">
+<div class="column">
+
+</div>
+</div>
+
+<div id="notify-area">
+</div>
+
+<div id="menu" onclick="$('#menu').hide();">
+ <a onclick="newFile();">new file</a>
+ <a onclick="openFile();">open file</a>
+ <a onclick="saveFile();">save file</a>
+ <a onclick="toggleFullscreen();">fullscreen</a>
+</div>
+
+</body>
+</html>
+
