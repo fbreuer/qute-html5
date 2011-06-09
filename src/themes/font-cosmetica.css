@@ -1,6 +1,6 @@
 @font-face {
     font-family: "MgOpen Cosmetica";
-    src: url("fonts/mgopencosmeticaregular.ttf");
+    src: url("/fonts/mgopencosmeticaregular.ttf");
 }
 
 body, .box-source {
