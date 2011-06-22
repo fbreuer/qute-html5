@@ -1,7 +1,14 @@
 /* BACKGROUND AND FOREGROUND */
 
 body {
-  background-image: url("/img/dark-background-2000.png");
+/*  background-image: url("/img/dark-background-ground.png"), url("/img/dark-background-top.png");
+  background-color: black;
+  background-repeat: no-repeat, repeat;
+  background-size: cover, auto;*/
+  background-image: url("/img/dark-background.png");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .box, .box-source, .box-output, .box-button {
