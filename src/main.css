@@ -108,3 +108,17 @@ body {
     left: 5px;
     padding: 5px;
 }
+
+/* HIDE SCROLLBAR */
+
+/* this does not work, as these properties are IE specific */
+
+.hidescroll {
+    scrollbar-shadow-color: rgba(0,0,0,0);
+    scrollbar-highlight-color: rgba(0,0,0,0);
+    scrollbar-face-color: rgba(0,0,0,0);
+    scrollbar-3dlight-color: rgba(0,0,0,0);
+    scrollbar-darkshadow-color: rgba(0,0,0,0);
+    scrollbar-track-color: rgba(0,0,0,0);
+    scrollbar-arrow-color: rgba(0,0,0,0);
+}

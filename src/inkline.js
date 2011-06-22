@@ -25,6 +25,11 @@ function toggleFullscreen() {
     cFullscreen.toggle(window);
 }
 
+function toggleScrollbar() {
+    /* scroll bar cannot be hidden via css */
+    $("#scroll-area").toggleClass("hidescroll");
+}
+
 function pickFile() {
     fp = cFilePicker.FilePicker();
     fp.title = "Open File";
@@ -446,6 +451,7 @@ function newFile() {
     filename = "";
     $(".column").empty();
     appendEmptyBlock();
+    editBlock($(".box-container").get(0));
 }
 
 function setFont(font) {
