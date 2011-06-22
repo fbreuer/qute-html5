@@ -53,12 +53,12 @@ function getActiveBlock() {
 // BLOCK MANIPULATION
 
 insertEmptyBlock = function(block) {
-    $(block).after(blankBlockStr);
-    return $(block).next().get(0);
+    insertAfterBlock("",block);
 }
 
 insertAfterBlock = function(source,target) {
-    block = insertEmptyBlock(target);
+    $(target).after(blankBlockStr);
+    block = $(target).next().get(0);
     textnode = document.createTextNode(source);
     $($(block).find(".box-source").get(0)).prepend(textnode);
     $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
@@ -68,12 +68,12 @@ insertAfterBlock = function(source,target) {
 }
 
 appendEmptyBlock = function() {
-    $(".column").append(blankBlockStr);
-    return $(".column").children().last();
+    appendBlock("");
 }
 
 function appendBlock(str) {
-    block = appendEmptyBlock();
+    $(".column").append(blankBlockStr);
+    block = $(".column").children().last();
     textnode = document.createTextNode(str);
     $($(block).find(".box-source").get(0)).prepend(textnode);
     $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
@@ -160,6 +160,7 @@ function blockInEditMode(block) {
 }
 
 function toggleBlock(block) {
+    console.log("toggleBlock");
     if(blockInEditMode(block)) {
 	blocks = processBlock(block);
 	console.log("toggleBlock: transforming " + blocks.length + " blocks");
