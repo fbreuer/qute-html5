@@ -56,14 +56,10 @@ insertEmptyBlock = function(block) {
     insertAfterBlock("",block);
 }
 
-insertAfterBlock = function(source,target) {
+insertAfterBlock = function(str,target) {
     $(target).after(blankBlockStr);
     block = $(target).next().get(0);
-    textnode = document.createTextNode(source);
-    $($(block).find(".box-source").get(0)).prepend(textnode);
-    $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
-    $(block).find('.box-source').dblclick( function () { toggleBlock($(this).parent()); } );
-    $(block).find('.box-output').click( function () { toggleBlock($(this).parent()); } );
+    prepareBlankBlock(block, str);
     return block;
 }
 
@@ -74,12 +70,16 @@ appendEmptyBlock = function() {
 function appendBlock(str) {
     $(".column").append(blankBlockStr);
     block = $(".column").children().last();
+    prepareBlankBlock(block, str);
+    return block;
+}
+
+function prepareBlankBlock(block, str) {
     textnode = document.createTextNode(str);
     $($(block).find(".box-source").get(0)).prepend(textnode);
     $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
     $(block).find('.box-source').dblclick( function () { toggleBlock($(this).parent()); } );
     $(block).find('.box-output').click( function () { toggleBlock($(this).parent()); } );    
-    return block;
 }
 
 
