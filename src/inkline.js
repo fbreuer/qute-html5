@@ -172,6 +172,29 @@ function toggleBlock(block) {
     }
 }
 
+
+// EDITING
+
+function closeCurrentBlockAndAddNext() {
+    b = getActiveBlock();
+    if(b != undefined) {
+	nb = insertAfterBlock("",b);
+	toggleBlock(b);
+	editBlock(nb);
+    }
+}
+
+function insertNewline() {
+    r = window.getSelection().getRangeAt(0);
+    t = document.createTextNode("\n");
+    r.insertNode(t);
+    r.setStartAfter(t);
+    r.setEndAfter(t);
+    r.collapse(false);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+}
+
 // KEYBOARD HANDLING
 
 function showChar(e)
@@ -250,14 +273,12 @@ function handleKeydown(e) {
 	case "ctrl+t":
 	    transformAll();
 	    return false;
+	case "return":
+	    closeCurrentBlockAndAddNext();
+	    return false;
 	case "ctrl+return":
 	    console.log("ctrl+enter pressed");
-	    b = getActiveBlock();
-	    if(b != undefined) {
-		nb = insertAfterBlock("",b);
-		toggleBlock(b);
-		editBlock(nb);
-	    }
+	    insertNewline();
 	    return false;
     }
     return true;
