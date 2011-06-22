@@ -63,7 +63,7 @@ insertAfterBlock = function(source,target) {
     $($(block).find(".box-source").get(0)).prepend(textnode);
     $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
     $(block).find('.box-source').dblclick( function () { toggleBlock($(this).parent()); } );
-    $(block).find('.box-output').dblclick( function () { toggleBlock($(this).parent()); } );
+    $(block).find('.box-output').click( function () { toggleBlock($(this).parent()); } );
     return block;
 }
 
@@ -78,7 +78,7 @@ function appendBlock(str) {
     $($(block).find(".box-source").get(0)).prepend(textnode);
     $(block).find('.box-button').click( function () { toggleBlock($(this).parent()); } );
     $(block).find('.box-source').dblclick( function () { toggleBlock($(this).parent()); } );
-    $(block).find('.box-output').dblclick( function () { toggleBlock($(this).parent()); } );    
+    $(block).find('.box-output').click( function () { toggleBlock($(this).parent()); } );    
     return block;
 }
 
