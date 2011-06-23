@@ -11,6 +11,10 @@ body {
     font-family: "Gentium Book Basic"; 
 }
 
+#menu, .box-output, .box-source {
+    font-size: 14pt;
+}
+
 /* BODY TEXT */
 
 .column code {
