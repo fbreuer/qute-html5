@@ -1,7 +1,8 @@
 /* BACKGROUND AND FOREGROUND */
 
 body {
-  background-image: url("/img/cute-background-2000.png");
+  background-image: url("/img/cute-background.png");
+  background-size: cover;
 }
 
 .box, .box-source, .box-output, .box-button {
