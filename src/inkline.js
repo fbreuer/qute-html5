@@ -495,7 +495,8 @@ function notify(str) {
 $(document).ready(function() {
     //cUI.setIcon().title = "Qute";
     //cUI.setIcon().imageSpec = "icon-512.png";
-    loadDocumentFromText("Welcome to **Qute**$^+$!\n");
+    txt = $(".column").html();
+    loadDocumentFromText(txt);
 
     $("#notify-area").hide();
     window.resizeTo(960,650);

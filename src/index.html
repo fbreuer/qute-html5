@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="main.css"/>
     <link id="thefont" rel="stylesheet" type="text/css" href="themes/font-cosmetica.css"/>
-    <link id="thetheme" rel="stylesheet" type="text/css" href="themes/theme-dark.css"/>
+    <link id="thetheme" rel="stylesheet" type="text/css" href="themes/theme-subtle-dark.css"/>
     <script type="text/javascript" src="lib/jquery-1.5.1.js"></script>
     <script type="text/javascript" src="lib/jquery.hotkeys.js"></script>
 	<script type="text/javascript" src="lib/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -32,6 +32,45 @@
 <div id="scroll-area">
 <div class="column">
 
+# Welcome to Qute!
+
+**Qute** is an experimental text editor. You can learn more about it at:
+
+> **http://www.inkcode.net/qute**
+
+Here is how to use Qute:
+
+1. To edit a paragraph, click on it.
+2. When done editing, double click the paragraph.
+
+You can use **Markdown** syntax for formatting and **TeX** syntax for formulas.
+
+The **Q** in the top left corner opens the **menu**, which you can use to save and load text files and switch **themes**.
+
+## Keyboard Shortcuts
+
+**Enter** - begin new paragraph.
+
+**Ctrl+Enter** - add new line to current paragraph.
+
+**Esc** - toggle menu.
+
+**Ctrl+S** or **F5** - save.
+
+**Ctrl+S** or **F9** - load.
+
+**F11** - toggle fullscreen.
+
+## Notes
+
+Qute saves and loads plain text that you can **edit with any other text editor**. Make sure, though, that your text editor uses **UTF-8** encoding and **Unix-style line endings** ("\n" instead of "\r\n"). **Paragraphs are separated by blank lines**, i.e., by the character sequence "\n\n".
+
+Qute is **experimental** software, so many things may not work. In particular, Qute comes **without warranty** of any kind.
+
+Qute is built on many great pieces of software, in particular **Showdown**, **MathJax** and **Chromeless**.
+
+Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
+
 </div>
 </div>
 
@@ -58,8 +97,9 @@
     <a onclick="setFont('junicode');">Junicode</a>
   </div>
   <div class="menu-page" id="menu-theme" style="display:none;">
-    <a onclick="setTheme('dark');">Dark</a>
-    <a onclick="setTheme('paper');">Paper</a>
+    <a onclick="setTheme('subtle-dark');">Subtle Dark</a>
+    <a onclick="setTheme('dramatic-dark');">Dramatic Dark</a>
+    <a onclick="setTheme('paper');">White Paper</a>
     <a onclick="setTheme('wood');">Wood</a>
     <a onclick="setTheme('cute');">Cute</a>
   </div>
