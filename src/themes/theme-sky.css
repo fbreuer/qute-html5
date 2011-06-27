@@ -1,0 +1,66 @@
+/* BACKGROUND AND FOREGROUND */
+
+body {
+  background-image: url("/img/sky-background.png");
+  background-size: cover;
+}
+
+.box, .box-source, .box-output, .box-button {
+  color: white;
+}
+
+.box-source {
+    border-left: 1px solid black;
+}
+
+/* TEXT: WHITE HALO */
+
+.box, .box-source, .box-output, .box-button, #notify-area, #menu a {
+    /*text-shadow: #fff 0px 0px 6px;*/
+    text-shadow: #000 2px 2px 4px, #000 2px 2px 4px;
+}
+
+/* TEXT: White GLOW */
+
+.active .box-button, #menu a:hover {
+    color: white;
+    text-shadow: #fff 0px 0px 6px, #fff 0px 0px 4px, #fff 0px 0px 4px, #fff 0px 0px 3px, #fff 0px 0px 2px, #fff 0px 0px 1px;
+}
+
+
+/* NOTIFY AREA */
+
+#notify-area {
+    background-color: rgba(50,88,149,0.9);
+    color: white;
+    text-shadow: #fff 0px 0px 3px, #fff 0px 0px 2px, #fff 0px 0px 1px;
+    box-shadow: 0px 0px 4px #fff;
+    border-radius: 5px;
+}
+
+/* MENU */
+
+#menu {
+    background-color: rgba(50,88,149,0.9);
+    box-shadow: 0px 0px 4px #fff;
+}
+
+#menu a {
+    color: white;
+    text-shadow: #fff 0px 0px 3px, #fff 0px 0px 2px, #fff 0px 0px 1px;
+    font-variant: small-caps;
+    text-align: center;
+}
+
+#menuanchor {
+    color: #fff;
+    text-shadow: #fff 0px 0px 4px, #fff 0px 0px 3px, #fff 0px 0px 2px, #fff 0px 0px 1px;
+    background-color: rgba(255,255,255,0.0);
+}
+
+/* BODY TEXT */
+
+.column a {
+    color: #fff;
+    text-decoration: underline;
+}
