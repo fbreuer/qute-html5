@@ -981,11 +981,21 @@ var _EncodeCode = function(text) {
 var _DoItalicsAndBold = function(text) {
 
 	// <strong> must go first:
+	text = text.replace(/(\*\*)(?=\S)([^\r]*?\S[*_]*)\1/g,
+		"<strong>$2</strong>");
+
+	text = text.replace(/(\*)(?=\S)([^\r]*?\S)\1/g,
+		"<em>$2</em>");
+
+        /* 
+	   here we removed underscores, because they get used a lot in TeX. original code:
+
 	text = text.replace(/(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1/g,
 		"<strong>$2</strong>");
 
 	text = text.replace(/(\*|_)(?=\S)([^\r]*?\S)\1/g,
-		"<em>$2</em>");
+		"<em>$2</em>");	
+	*/
 
 	return text;
 }
