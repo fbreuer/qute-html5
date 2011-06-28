@@ -4,11 +4,11 @@
 }
 
 body {
-    font-family: "Junicode";
+    font-family: "Garamond", "Garamond Premr Pro Med", "Junicode";
 }
 
 .box-source {
-    font-family: "Junicode"; 
+    font-family: "Garamond", "Garamond Premr Pro Med", "Junicode"; 
 }
 
 #menu, .box-output, .box-source {
