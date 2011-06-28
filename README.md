@@ -17,3 +17,6 @@ As of now, you need to compile Qute yourself if you are on Linux.
 ## Compiling
 
 You need to install Chromeless and MathJax to compile Qute.  If `qute` is the name of the source directory, then you need to place Chromeless in `qute/chromeless` and MathJax in `qute/src/lib/mathjax`. You may want to delete the docs and image fonts from the MathJax distribution to speed compilation.
+
+
+Copyright (C) 2011 Felix Breuer
