@@ -54,11 +54,11 @@ function pickFile() {
     fp.title = "Open File";
     fp.mode = "save";
     fp.show(function(x) {
-	if (x === undefined) {
-	    console.log("Nothing picked");
-	} else {
-	    console.log("picked " + x);
-	}
+        if (x === undefined) {
+            console.log("Nothing picked");
+        } else {
+            console.log("picked " + x);
+        }
     });
 }
 
@@ -109,31 +109,31 @@ function processBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     source = readBlock(sourceElt);
     if(source.trim() == "") { // delete
-	$(block).remove();
-	return [];
+        $(block).remove();
+        return [];
     }
     var sources = source.split(blockSeparator);
     if(sources.length > 1) { // split
-	sourceElt.innerHTML = sources[0];
-	blocks = [$(block).get(0)];
-	for(i = 1; i < sources.length; i++) {
-	    b = insertAfterBlock(sources[i], blocks[blocks.length-1]);
-	    blocks.push(b);
-	}
-	return blocks;
+        sourceElt.innerHTML = sources[0];
+        blocks = [$(block).get(0)];
+        for(i = 1; i < sources.length; i++) {
+            b = insertAfterBlock(sources[i], blocks[blocks.length-1]);
+            blocks.push(b);
+        }
+        return blocks;
     } else { // no-op
-	return [$(block).get(0)];
+        return [$(block).get(0)];
     }
 }
 
 function deleteEmptyBlocks() {
     $(".box-container").each(function (block) {
-	sourceElt = $(block).find(".box-source").get(0);
-	source = readBlock(sourceElt);
-	if(source.trim() == "") { // delete
-	    $(block).remove();
-	    return [];
-	}
+        sourceElt = $(block).find(".box-source").get(0);
+        source = readBlock(sourceElt);
+        if(source.trim() == "") { // delete
+            $(block).remove();
+            return [];
+        }
     });
 }
 
@@ -181,11 +181,11 @@ function blockInEditMode(block) {
 function toggleBlock(block) {
     console.log("toggleBlock");
     if(blockInEditMode(block)) {
-	blocks = processBlock(block);
-	console.log("toggleBlock: transforming " + blocks.length + " blocks");
-	for(i = 0; i < blocks.length; i++) {
+        blocks = processBlock(block);
+        console.log("toggleBlock: transforming " + blocks.length + " blocks");
+        for(i = 0; i < blocks.length; i++) {
             transformBlock(blocks[i]);
-	}
+        }
     } else {
         editBlock(block);
     }
@@ -197,9 +197,9 @@ function toggleBlock(block) {
 function closeCurrentBlockAndAddNext() {
     b = getActiveBlock();
     if(b != undefined) {
-	nb = insertAfterBlock("",b);
-	toggleBlock(b);
-	editBlock(nb);
+        nb = insertAfterBlock("",b);
+        toggleBlock(b);
+        editBlock(nb);
     }
 }
 
@@ -219,13 +219,13 @@ function insertNewline() {
 function showChar(e)
 {
     alert("Key Pressed: " + String.fromCharCode(e.charCode) + "\n"
-	  + "charCode: " + e.charCode + " which: " + e.which + " keyCode " + e.keyCode);
+          + "charCode: " + e.charCode + " which: " + e.which + " keyCode " + e.keyCode);
 }
 
 function keyboardEventToString(event) {
     // Don't fire in text-accepting inputs that we didn't directly bind to
     if ( this !== event.target && (/textarea|select/i.test( event.target.nodeName ) || event.target.type === "text") ) {
-	return;
+        return;
     }
 
     //if (event.which == 0)
@@ -238,35 +238,35 @@ function keyboardEventToString(event) {
 
     // check combinations (alt|ctrl|shift+anything)
     if ( event.altKey && special !== "alt" ) {
-	modif += "alt+";
+        modif += "alt+";
     }
     
     if ( event.ctrlKey && special !== "ctrl" ) {
-	modif += "ctrl+";
+        modif += "ctrl+";
     }
     
 // TODO: Need to make sure this works consistently across platforms
     if ( event.metaKey && !event.ctrlKey && special !== "meta" ) {
-	modif += "meta+";
+        modif += "meta+";
     }
     
     if ( event.shiftKey && special !== "shift" ) {
-	modif += "shift+";
+        modif += "shift+";
     }
     
     if ( special ) {
-	return modif + special;
-	//possible[ modif + special ] = true;
-	
+        return modif + special;
+        //possible[ modif + special ] = true;
+        
     } else {
-	return modif + character;
-	//possible[ modif + character ] = true;
-	/*possible[ modif + jQuery.hotkeys.shiftNums[ character ] ] = true;
-	
-	// "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
-	if ( modif === "shift+" ) {
-	    possible[ jQuery.hotkeys.shiftNums[ character ] ] = true;
-	}*/
+        return modif + character;
+        //possible[ modif + character ] = true;
+        /*possible[ modif + jQuery.hotkeys.shiftNums[ character ] ] = true;
+        
+        // "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
+        if ( modif === "shift+" ) {
+            possible[ jQuery.hotkeys.shiftNums[ character ] ] = true;
+        }*/
     }
     return possible;
 }
@@ -275,30 +275,30 @@ function handleKeydown(e) {
     // first handle special characters
     str = keyboardEventToString(e);
     switch(str) {
-	case "ctrl+s":
+        case "ctrl+s":
         case "cmd+s":
         case "f5":
-	    saveFile();
-	    return false;
-	case "f9":
-	    openFile();
-	    return false;
-	case "f11":
-	    toggleFullscreen();
-	    return false;
-	case "esc":
-	    toggleMenu("root");
-	    return false;
-	case "ctrl+t":
-	    transformAll();
-	    return false;
-	case "return":
-	    closeCurrentBlockAndAddNext();
-	    return false;
-	case "ctrl+return":
-	    console.log("ctrl+enter pressed");
-	    insertNewline();
-	    return false;
+            saveFile();
+            return false;
+        case "f9":
+            openFile();
+            return false;
+        case "f11":
+            toggleFullscreen();
+            return false;
+        case "esc":
+            toggleMenu("root");
+            return false;
+        case "ctrl+t":
+            transformAll();
+            return false;
+        case "return":
+            closeCurrentBlockAndAddNext();
+            return false;
+        case "ctrl+return":
+            console.log("ctrl+enter pressed");
+            insertNewline();
+            return false;
     }
     return true;
 }
@@ -306,8 +306,8 @@ function handleKeydown(e) {
 
 function handleKeypress(e) {
     if(e.charCode != 0) {
-	c = String.fromCharCode(e.charCode);
-	insertCharacter(c);
+        c = String.fromCharCode(e.charCode);
+        insertCharacter(c);
     }
     return false;
 }
@@ -324,29 +324,29 @@ function saveNow() {
 }
 
 function loadNow() {
-	loadDocumentFromFile(fileName());
+        loadDocumentFromFile(fileName());
 }
 
 function loadDocumentFromJSON(obj) {
     if(obj != undefined) {
-	$(".column").empty();
-	for(var i = 0; i < obj.length; i++) {
-	    appendBlock(obj[i].text);
-	}
-	setActiveBlock($($(".box-container").get(0)));
+        $(".column").empty();
+        for(var i = 0; i < obj.length; i++) {
+            appendBlock(obj[i].text);
+        }
+        setActiveBlock($($(".box-container").get(0)));
     }
 }
 
 function loadDocumentFromText(str) {
     if(str != undefined) {
-		$(".column").empty();
-		blocks = str.split(blockSeparator); // blocks are delimited by two blank lines
-		for(var i = 0; i < blocks.length; i++) {
-	    	appendBlock(blocks[i]);
-		}
-	// setActiveBlock($($(".box-container").get(0)));
-	    transformAll();
-    }	
+                $(".column").empty();
+                blocks = str.split(blockSeparator); // blocks are delimited by two blank lines
+                for(var i = 0; i < blocks.length; i++) {
+                appendBlock(blocks[i]);
+                }
+        // setActiveBlock($($(".box-container").get(0)));
+            transformAll();
+    }   
 }
 
 function loadDocumentFromFile(path) {
@@ -358,7 +358,7 @@ function saveDocumentToJSON() {
     result = [];
     blockContents = $(".box-source");
     for(var i = 0; i < blockContents.length; i++) {
-	result.push( { text: readBlock($(blockContents.get(i))) } );
+        result.push( { text: readBlock($(blockContents.get(i))) } );
     }
     return result;
 }
@@ -367,7 +367,7 @@ function saveDocumentToText() {
     result = [];
     blockContents = $(".box-source");
     for(var i = 0; i < blockContents.length; i++) {
-		result.push( readBlock($(blockContents.get(i))) );
+                result.push( readBlock($(blockContents.get(i))) );
     }
     return result.join(blockSeparator);
 }
@@ -377,7 +377,7 @@ function saveDocumentToFile(path) {
     var stream = cFile.open(path, "w");
     try {
         stream.write(content);
-	notify("Saved " + path  + ".");
+        notify("Saved " + path  + ".");
     }
     finally {
         stream.close();
@@ -392,11 +392,11 @@ function readBlock(block) {
     res = "";
     childNodes = $(block).get(0).childNodes;
     for(var i = 0; i < childNodes.length; i++) {
-	    if(childNodes[i].nodeType == 3) {
-	        res += childNodes[i].nodeValue;
-	    } else if (childNodes[i].nodeType == 1 && $(childNodes[i]).get(0).tagName == "BR") {
-	        res += "\n";
-	    }
+            if(childNodes[i].nodeType == 3) {
+                res += childNodes[i].nodeValue;
+            } else if (childNodes[i].nodeType == 1 && $(childNodes[i]).get(0).tagName == "BR") {
+                res += "\n";
+            }
     }
     return res;
 }
@@ -421,16 +421,16 @@ jQuery.fn.center = function () {
     parent: cUI.getMenu(),
     label: "File",
     children: [
-	cMenu.Menu({
-	    label: "Open",
-	    type: "radio",
-	    checked: true,
-	    onClick: function(e) { loadNow(); }
-	}),
-	cMenu.Menu({
-	    label: "Pick File",
-	    onClick: function(e) { pickFile(); }
-	})
+        cMenu.Menu({
+            label: "Open",
+            type: "radio",
+            checked: true,
+            onClick: function(e) { loadNow(); }
+        }),
+        cMenu.Menu({
+            label: "Pick File",
+            onClick: function(e) { pickFile(); }
+        })
     ]
 });*/
 
@@ -443,9 +443,9 @@ function showMenu(key) {
 
 function toggleMenu() {
     if($("#menu").css('display') == "none") {
-	showMenu('root');
+        showMenu('root');
     } else {
-	$('#menu').hide();
+        $('#menu').hide();
     }
 }
 
@@ -457,34 +457,34 @@ function openFile() {
     fp.title = "Open File";
     fp.mode = "open";
     fp.show(function(x) {
-	if (x === undefined) {
-	    console.log("Open File: nothing picked");
-	} else {
-	    console.log("Open File: picked " + x);
-	    filename = x;
-	    loadDocumentFromFile(x);
-	}
+        if (x === undefined) {
+            console.log("Open File: nothing picked");
+        } else {
+            console.log("Open File: picked " + x);
+            filename = x;
+            loadDocumentFromFile(x);
+        }
     });
 }
 
 function saveFile() {
     console.log("Save File");
     if(filename == "") {
-	console.log("Save File: no filename set");
-	fp = cFilePicker.FilePicker();
-	fp.title = "Save As File";
-	fp.mode = "save";
-	fp.show(function(x) {
-	    if (x === undefined) {
-		console.log("Save File: nothing picked");
-	    } else {
-		console.log("Save File: picked " + x);
-		filename = x;
-		saveFile();
-	    }
-	});	
+        console.log("Save File: no filename set");
+        fp = cFilePicker.FilePicker();
+        fp.title = "Save As File";
+        fp.mode = "save";
+        fp.show(function(x) {
+            if (x === undefined) {
+                console.log("Save File: nothing picked");
+            } else {
+                console.log("Save File: picked " + x);
+                filename = x;
+                saveFile();
+            }
+        });     
     } else {
-	saveDocumentToFile(filename);
+        saveDocumentToFile(filename);
     }
 }
 
@@ -510,7 +510,7 @@ function notify(str) {
     $("#notify-area").html(str);
     $("#notify-area").fadeIn().delay(4000).fadeOut();
 }
-	
+        
 $(document).ready(function() {
     //cUI.setIcon().title = "Qute";
     //cUI.setIcon().imageSpec = "icon-512.png";

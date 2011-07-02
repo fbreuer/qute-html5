@@ -5,12 +5,12 @@ html {
 }
 
 body {
-  background-position: 50% 0%;
-  background-attachment: fixed;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  height: 100%;
+    background-position: 50% 0%;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    height: 100%;
 }
 
 .hidden {
@@ -18,9 +18,9 @@ body {
 }
 
 .box, .box-source, .box-output, .box-button {
-  padding: 0px;
-  margin: 1em;
-  background: transparent;
+    padding: 0px;
+    margin: 1em;
+    background: transparent;
 }
 
 .box-output, .box-source {
@@ -38,32 +38,32 @@ body {
 }
 
 .box-container {
-  /*overflow: hidden;*/
-  margin: 1em;
-  /*width: 660px;*/
+    /*overflow: hidden;*/
+    margin: 1em;
+    /*width: 660px;*/
 }
 
 .box-button {
-  font-weight: bold;
-  float: left;
-  width: 20px;
-  margin: 0;
-  padding: 0;
+    font-weight: bold;
+    float: left;
+    width: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .box-source, .box-output {
-  /*float: right;*/
-  /*margin: 0 6px 6px 0;*/
-  margin: 0;
-  padding: 0;
-  text-align: justify;
-  /*width: 770px; */
+    /*float: right;*/
+    /*margin: 0 6px 6px 0;*/
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+    /*width: 770px; */
 }
 
 .column {
-  max-width: 700px;
-  margin: auto;
-  padding: 40px 20px 100px 20px;
+    max-width: 700px;
+    margin: auto;
+    padding: 40px 20px 100px 20px;
 }
 
 

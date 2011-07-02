@@ -1,18 +1,18 @@
 /* BACKGROUND AND FOREGROUND */
 
 body {
-/*  background-image: url("/img/dark-background-ground.png"), url("/img/dark-background-top.png");
-  background-color: black;
-  background-repeat: no-repeat, repeat;
-  background-size: cover, auto;*/
-  background-image: url("/img/subtle-dark-background.png");
-  background-color: black;
-  background-repeat: no-repeat;
-  background-size: cover;
+    /*  background-image: url("/img/dark-background-ground.png"), url("/img/dark-background-top.png");
+        background-color: black;
+        background-repeat: no-repeat, repeat;
+        background-size: cover, auto;*/
+    background-image: url("/img/subtle-dark-background.png");
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .box, .box-source, .box-output, .box-button {
-  color: white;
+    color: white;
 }
 
 .box-source {

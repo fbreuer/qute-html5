@@ -1,12 +1,12 @@
 /* BACKGROUND AND FOREGROUND */
 
 body {
-  background-image: url("/img/wood-background.png");
-  background-size: cover;
+    background-image: url("/img/wood-background.png");
+    background-size: cover;
 }
 
 .box, .box-source, .box-output, .box-button {
-  color: white;
+    color: white;
 }
 
 .box-source {
