@@ -219,6 +219,42 @@ function insertNewline() {
     insertText("\n");
  }
 
+function moveFocusToPreviousBlock() {
+    block = getActiveBlock();
+    prev = $(block).prev();
+    displayBlock(block);
+    editBlock(prev);
+    // place caret at end of paragraph
+    node = $(prev).find(".box-source").get(0).lastChild;
+    r = window.getSelection().getRangeAt(0);
+    r.setStartAfter(node);
+    r.setEndAfter(node);
+    r.collapse(false);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);    
+}
+
+function moveFocusToNextBlock() {
+    block = getActiveBlock();
+    next = $(block).next();
+    displayBlock(block);
+    editBlock(next);
+}
+
+function moveActiveBlockUp() {
+    block = getActiveBlock();
+    prev = $(block).prev();
+    prev.detach();
+    prev.insertAfter(block);
+}
+
+function moveActiveBlockDown() {
+    block = getActiveBlock();
+    next = $(block).next();
+    next.detach();
+    next.insertBefore(block);
+}
+
 // COPY AND PASTE
 
 function pasteAtCursorPosition() {
@@ -320,6 +356,18 @@ function handleKeydown(e) {
             return false;
         case "ctrl+v":
             pasteAtCursorPosition();
+            return false;
+        case "ctrl+up":
+            moveFocusToPreviousBlock();
+            return false;
+        case "ctrl+down":
+            moveFocusToNextBlock();
+            return false;
+        case "ctrl+shift+up":
+            moveActiveBlockUp();
+            return false;
+        case "ctrl+shift+down":
+            moveActiveBlockDown();
             return false;
     }
     return true;
