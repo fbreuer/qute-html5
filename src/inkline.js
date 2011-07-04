@@ -228,6 +228,11 @@ function pasteAtCursorPosition() {
     }
 }
 
+function copyEverything() {
+    cClipboard.set(saveDocumentToText(),"text");
+}
+
+
 // KEYBOARD HANDLING
 
 function showChar(e)
