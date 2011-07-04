@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link rel="stylesheet" type="text/css" href="main.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="print.css" media="print"/>
     <link id="thefont" rel="stylesheet" type="text/css" href="themes/font-cosmetica.css"/>
-    <link id="thetheme" rel="stylesheet" type="text/css" href="themes/theme-subtle-dark.css"/>
+    <link id="thetheme" rel="stylesheet" type="text/css" href="themes/theme-subtle-dark.css" media="screen"/>
     <script type="text/javascript" src="lib/jquery-1.5.1.js"></script>
     <script type="text/javascript" src="lib/jquery.hotkeys.js"></script>
         <script type="text/javascript" src="lib/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -82,8 +83,10 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
     <a onclick="newFile();">new file</a>
     <a onclick="openFile();">open file</a>
     <a onclick="saveFile();">save file</a>
+    <a onclick="window.print();">print</a>
+    <!--<a onclick="alert('foo');">test</a>-->
     <a onclick="copyEverything();">copy everything</a>
-    <a onclick="toggleFullscreen();">fullscreen</a>
+    <a onclick="toggleFullscreen();">toggle fullscreen</a>
     <!-- does not work yet <a onclick="toggleScrollbar();">scrollbar</a> -->
     <a onclick="showMenu('config');event.stopPropagation();">config</a>
   </div>
