@@ -32,6 +32,7 @@ cFile = require("file");
 cFilePicker = require("file-picker");
 cHotkey = require("hotkey");
 cClipboard = require("clipboard");
+cPrefs = require("preferences-service");
 
 var filename = "";
 
@@ -566,10 +567,12 @@ function newFile() {
 }
 
 function setFont(font) {
+    cPrefs.set("font",font);
     $("#thefont").attr("href", "themes/font-"+font+".css");
 }
 
 function setTheme(theme) {
+    cPrefs.set("theme",theme);
     $("#thetheme").attr("href", "themes/theme-"+theme+".css");
 }
 
@@ -589,5 +592,8 @@ $(document).ready(function() {
 
     $("#notify-area").hide();
     window.resizeTo(960,650);
+
+    setFont(cPrefs.get("font","cosmetica"));
+    setTheme(cPrefs.get("theme","subtle-dark"));
 });
 
