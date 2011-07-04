@@ -31,6 +31,7 @@ cMenu = require("menu");
 cFile = require("file");
 cFilePicker = require("file-picker");
 cHotkey = require("hotkey");
+cClipboard = require("clipboard");
 
 var filename = "";
 
@@ -203,15 +204,28 @@ function closeCurrentBlockAndAddNext() {
     }
 }
 
-function insertNewline() {
+function insertText(str) {
     r = window.getSelection().getRangeAt(0);
-    t = document.createTextNode("\n");
+    t = document.createTextNode(str);
     r.insertNode(t);
     r.setStartAfter(t);
     r.setEndAfter(t);
     r.collapse(false);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(r);
+}
+
+function insertNewline() {
+    insertText("\n");
+ }
+
+// COPY AND PASTE
+
+function pasteAtCursorPosition() {
+    text = cClipboard.get("text");
+    if(text) {
+        insertText(text);
+    }
 }
 
 // KEYBOARD HANDLING
@@ -298,6 +312,9 @@ function handleKeydown(e) {
         case "ctrl+return":
             console.log("ctrl+enter pressed");
             insertNewline();
+            return false;
+        case "ctrl+v":
+            pasteAtCursorPosition();
             return false;
     }
     return true;
