@@ -1,0 +1,31 @@
+/* the "one-column" and "two-column" css files define the css properties that are only relevant to the one- and two-colum display modes, respectively */
+
+.hidden {
+    display: none;
+}
+
+.box, .box-source, .box-output, .box-button {
+    padding: 0px;
+    margin: 1em;
+} 
+
+.box-source {
+    padding-left: 20px !important;
+}
+
+.box-output p {
+    margin: 0;
+}
+
+.box-container {
+    margin: 1em;
+}
+
+.box-source, .box-output {
+    margin: 0;
+    padding: 0;
+}
+
+.column {
+    max-width: 700px;
+}

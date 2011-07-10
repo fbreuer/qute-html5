@@ -36,6 +36,9 @@ cPrefs = require("preferences-service");
 
 var filename = "";
 
+var twoColumnMode = false;
+var transformTimer = false;
+
 // UI
 
 function togglePanel() {
@@ -44,6 +47,38 @@ function togglePanel() {
 
 function toggleFullscreen() {
     cFullscreen.toggle(window);
+}
+
+function toggleTwoColumnMode() {
+    setTwoColumnMode(!twoColumnMode);
+}
+
+function setTwoColumnMode(b) {
+    if(b) {
+        /* activate two column mode */
+        $("#column-mode").attr("href", "two-column.css");
+        twoColumnMode = true;
+        /* bind event handlers */
+        $('.box-source').live('keyup.twoColumn paste.twoColumn', function(event) { 
+            console.log("got here");
+            if(transformTimer) {
+                console.log("clearing Timeout");
+                window.clearTimeout(transformTimer);
+                transformTimer = undefined;
+            }
+            // window.setTimeout( function() {alert("foo");}, 1000);
+            transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 1000);
+        }).live('blur.twoColumn', function(event) {
+            transformBlock($(event.target).parent(".box-container"))
+        });
+        
+    } else {
+        /* activate one column mode */
+        $("#column-mode").attr("href", "one-column.css");
+        twoColumnMode = false;
+        /* unbind event handlers */
+        $('.box-source').die('.twoColumn');
+    }
 }
 
 function toggleScrollbar() {

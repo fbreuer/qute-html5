@@ -13,13 +13,7 @@ body {
     height: 100%;
 }
 
-.hidden {
-    display: none;
-}
-
 .box, .box-source, .box-output, .box-button {
-    padding: 0px;
-    margin: 1em;
     background: transparent;
 }
 
@@ -29,18 +23,7 @@ body {
 
 .box-source {
     white-space: pre-wrap;
-    padding-left: 20px !important;
     outline: 0px solid transparent;
-}
-
-.box-output p {
-    margin: 0;
-}
-
-.box-container {
-    /*overflow: hidden;*/
-    margin: 1em;
-    /*width: 660px;*/
 }
 
 .box-button {
@@ -52,16 +35,10 @@ body {
 }
 
 .box-source, .box-output {
-    /*float: right;*/
-    /*margin: 0 6px 6px 0;*/
-    margin: 0;
-    padding: 0;
     text-align: justify;
-    /*width: 770px; */
 }
 
 .column {
-    max-width: 700px;
     margin: auto;
     padding: 40px 20px 100px 20px;
 }

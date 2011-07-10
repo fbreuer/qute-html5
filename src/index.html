@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="main.css" media="screen"/>
+    <link id="column-mode" rel="stylesheet" type="text/css" href="one-column.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="print.css" media="print"/>
     <link id="thefont" rel="stylesheet" type="text/css" href="themes/font-cosmetica.css"/>
     <link id="thetheme" rel="stylesheet" type="text/css" href="themes/theme-subtle-dark.css" media="screen"/>
@@ -31,9 +32,7 @@
 <a id="menuanchor" onclick="showMenu('root');">Q<!--<img src="img/icon-36.png"></img>--></a>
 
 <div id="scroll-area">
-<div class="column">
-
-# Welcome to Qute!
+<div class="column"># Welcome to Qute!
 
 **Qute** is an experimental text editor. You can learn more about it at:
 
@@ -87,6 +86,7 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
     <!--<a onclick="alert('foo');">test</a>-->
     <a onclick="copyEverything();">copy everything</a>
     <a onclick="toggleFullscreen();">toggle fullscreen</a>
+    <a onclick="toggleTwoColumnMode();">toggle two-column mode (slow!)</a>
     <!-- does not work yet <a onclick="toggleScrollbar();">scrollbar</a> -->
     <a onclick="showMenu('config');event.stopPropagation();">config</a>
   </div>
