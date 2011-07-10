@@ -67,7 +67,7 @@ function setTwoColumnMode(b) {
                 transformTimer = undefined;
             }
             // window.setTimeout( function() {alert("foo");}, 1000);
-            transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 1000);
+            transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 800);
         }).live('blur.twoColumn', function(event) {
             transformBlock($(event.target).parent(".box-container"))
         });
