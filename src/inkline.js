@@ -554,7 +554,6 @@ function handleKeydown(e) {
             return false;
         case "backspace":
             if(getCursorOffset() == 0) {
-                notify("got here");
                 joinPrevious();
                 return false;
             } else {
