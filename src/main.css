@@ -19,6 +19,8 @@ body {
 
 .box-output, .box-source {
     font-size: 12pt;
+    /* for debugging: */
+    /* border: 1px solid white; */
 }
 
 .box-source {

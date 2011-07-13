@@ -17,7 +17,7 @@
 */
 
 
-blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'></div><div class='box-output'></div></div>";
+blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'><br _moz='true' _moz_dirty=''/></div><div class='box-output'></div></div>";
 
 dir="C:\\Users\\Felix\\";
 
@@ -242,7 +242,7 @@ function closeCurrentBlockAndAddNext() {
 
 function insertText(str) {
     r = window.getSelection().getRangeAt(0);
-    t = document.createTextNode(str);
+    t = document.createTextNode(new String(str));
     r.insertNode(t);
     r.setStartAfter(t);
     r.setEndAfter(t);
@@ -296,6 +296,8 @@ function moveActiveBlockDown() {
 function pasteAtCursorPosition() {
     text = cClipboard.get("text");
     if(text) {
+        console.log("Paste!\n");
+        console.log(text);
         insertText(text);
     }
 }
@@ -500,9 +502,9 @@ function readBlock(block) {
     for(var i = 0; i < childNodes.length; i++) {
             if(childNodes[i].nodeType == 3) {
                 res += childNodes[i].nodeValue;
-            } else if (childNodes[i].nodeType == 1 && $(childNodes[i]).get(0).tagName == "BR") {
+            } /* else if (childNodes[i].nodeType == 1 && $(childNodes[i]).get(0).tagName == "BR") {
                 res += "\n";
-            }
+            } */
     }
     return res;
 }
