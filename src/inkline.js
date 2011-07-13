@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'><br _moz='true' _moz_dirty=''/></div><div class='box-output'></div></div>";
+mozDirtyStr = "<br _moz='true' _moz_dirty=''/>";
+blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div><div class='box-output'></div></div>";
 
 dir="C:\\Users\\Felix\\";
 
@@ -223,6 +223,8 @@ function toggleBlock(block) {
         for(i = 0; i < blocks.length; i++) {
             transformBlock(blocks[i]);
         }
+        // remove cursor
+        window.getSelection().removeAllRanges();
     } else {
         editBlock(block);
     }
@@ -255,23 +257,59 @@ function insertNewline() {
     insertText("\n");
  }
 
-function splitParagraph() {
+function normalizeActiveParagraph() {
     b = getActiveBlock();
     if(b.get(0)) {
         b.get(0).normalize();
+        b.find(".box-source br").remove();
+        b.find(".box-source").append(mozDirtyStr);
+        b.get(0).normalize();
+    }
+}
+
+function splitParagraph() {
+    b = getActiveBlock();
+    if(b.get(0)) {
+        normalizeActiveParagraph();
         txt = readBlock($(b).find(".box-source").get(0));
         r = window.getSelection().getRangeAt(0).cloneRange();
-        offset = r.startOffset;
-        txt1 = txt.slice(0,offset);
-        txt2 = txt.slice(offset);
+        txt1 = "";  // first half of the paragraph source
+        txt2 = "";  // second half of the paragraph source
+        if(r.startContainer.nodeType == Node.ELEMENT_NODE) {
+            // range is on an element, i.e. either at the beginning or
+            // end of the paragraph
+            if(r.startOffset == 0) {
+                // we are at the beginning
+                // in this case the *first* of the new paragraphs is empty!
+                txt2 = txt;
+            } else {
+                // we are at the end
+                txt1 = txt;
+            }
+        } else {
+            // range is on a text node
+            offset = r.startOffset;
+            txt1 = txt.slice(0,offset);
+            txt2 = txt.slice(offset);
+        }
         b2 = insertAfterBlock(txt2,b);
         b1 = insertAfterBlock(txt1,b);
         b.remove();
         transformBlock(b1);
         transformBlock(b2);
-        displayBlock(b1);
+        if(txt1 == "") { editBlock(b1); } else { displayBlock(b1); }
         editBlock(b2);
     }
+}
+
+function joinPrevious() {
+    b = getActiveBlock();
+    if(b.get(0)) {
+    }
+}
+
+function joinNext() {
+    
 }
 
 function moveFocusToPreviousBlock() {
