@@ -255,6 +255,25 @@ function insertNewline() {
     insertText("\n");
  }
 
+function splitParagraph() {
+    b = getActiveBlock();
+    if(b.get(0)) {
+        b.get(0).normalize();
+        txt = readBlock($(b).find(".box-source").get(0));
+        r = window.getSelection().getRangeAt(0).cloneRange();
+        offset = r.startOffset;
+        txt1 = txt.slice(0,offset);
+        txt2 = txt.slice(offset);
+        b2 = insertAfterBlock(txt2,b);
+        b1 = insertAfterBlock(txt1,b);
+        b.remove();
+        transformBlock(b1);
+        transformBlock(b2);
+        displayBlock(b1);
+        editBlock(b2);
+    }
+}
+
 function moveFocusToPreviousBlock() {
     block = getActiveBlock();
     prev = $(block).prev();
@@ -392,10 +411,13 @@ function handleKeydown(e) {
         case "return":
             closeCurrentBlockAndAddNext();
             return false;
-        case "meta+return":
-        case "ctrl+return":
+        case "shift+return":
             console.log("ctrl+enter pressed");
             insertNewline();
+            return false;
+        case "meta+return":
+        case "ctrl+return":
+            splitParagraph();
             return false;
         case "meta+v":
         case "ctrl+v":
