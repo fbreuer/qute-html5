@@ -263,6 +263,28 @@ function placeCursor(block, offset) {
     }
 }
 
+function getCursorOffset() {
+    b = getActiveBlock();
+    if(b.get(0)) {
+        normalizeBlock(b);
+        r = window.getSelection().getRangeAt(0).cloneRange();
+        if(r.startContainer.nodeType == Node.ELEMENT_NODE) {
+            // range is on an element, i.e. either at the beginning or
+            // end of the paragraph
+            if(r.startOffset == 0) {
+                // we are at the beginning
+                return 0;
+            } else {
+                // we are at the end
+                return readBlock($(b).find(".box-source").get(0)).length;
+            }
+        } else {
+            return r.startOffset;
+        }
+    }
+    return undefined;
+}
+
 /* inserts text at the end of the block. 
    does *not* trigger a transform. */
 function appendTextToBlock(txt, target) {
@@ -314,26 +336,9 @@ function splitParagraph() {
     if(b.get(0)) {
         normalizeActiveBlock();
         txt = readBlock($(b).find(".box-source").get(0));
-        r = window.getSelection().getRangeAt(0).cloneRange();
-        txt1 = "";  // first half of the paragraph source
-        txt2 = "";  // second half of the paragraph source
-        if(r.startContainer.nodeType == Node.ELEMENT_NODE) {
-            // range is on an element, i.e. either at the beginning or
-            // end of the paragraph
-            if(r.startOffset == 0) {
-                // we are at the beginning
-                // in this case the *first* of the new paragraphs is empty!
-                txt2 = txt;
-            } else {
-                // we are at the end
-                txt1 = txt;
-            }
-        } else {
-            // range is on a text node
-            offset = r.startOffset;
-            txt1 = txt.slice(0,offset);
-            txt2 = txt.slice(offset);
-        }
+        offset = getCursorOffset();
+        txt1 = txt.slice(0,offset);
+        txt2 = txt.slice(offset);
         b2 = insertAfterBlock(txt2,b);
         b1 = insertAfterBlock(txt1,b);
         b.remove();
@@ -547,6 +552,23 @@ function handleKeydown(e) {
         case "ctrl+backspace":
             joinPrevious();
             return false;
+        case "backspace":
+            if(getCursorOffset() == 0) {
+                notify("got here");
+                joinPrevious();
+                return false;
+            } else {
+                return true;
+            }
+        case "del":
+            off = getCursorOffset();
+            len = readBlock(getActiveBlock().find(".box-source").get(0)).length;
+            if(off == len) {
+                joinNext();
+                return false;
+            } else {
+                return true;
+            }
         case "meta+del":
         case "ctrl+del":
             joinNext();
@@ -641,6 +663,11 @@ function fileName() {
 }
 
 function readBlock(block) {
+    /* these first four lines ensure that block is a .box-source element */
+    /*b = $(block).find(".box-source").get(0);
+    if(b) {
+        block = b;
+    }*/
     res = "";
     childNodes = $(block).get(0).childNodes;
     for(var i = 0; i < childNodes.length; i++) {
