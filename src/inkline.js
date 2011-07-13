@@ -60,7 +60,6 @@ function setTwoColumnMode(b) {
         twoColumnMode = true;
         /* bind event handlers */
         $('.box-source').live('keyup.twoColumn paste.twoColumn', function(event) { 
-            console.log("got here");
             if(transformTimer) {
                 console.log("clearing Timeout");
                 window.clearTimeout(transformTimer);
@@ -77,7 +76,12 @@ function setTwoColumnMode(b) {
         $("#column-mode").attr("href", "one-column.css");
         twoColumnMode = false;
         /* unbind event handlers */
-        $('.box-source').die('.twoColumn');
+        if(transformTimer) {
+            console.log("clearing Timeout");
+            window.clearTimeout(transformTimer);
+            transformTimer = undefined;
+        }
+        $('.box-source').die('keyup.twoColumn paste.twoColumn blur.twoColumn');
     }
 }
 
