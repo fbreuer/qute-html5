@@ -242,6 +242,40 @@ function closeCurrentBlockAndAddNext() {
     }
 }
 
+/* make sure that the block is in edit mode when calling this function! */
+function placeCursor(block, offset) {
+    normalizeBlock(block);
+    elem = $(block).find(".box-source").get(0);
+    for(i = 0; i < elem.childNodes.length; i++) {
+        if(elem.childNodes[i].nodeType == Node.TEXT_NODE) {
+            s = window.getSelection();
+            r = document.createRange();
+            r.setStart(elem.childNodes[i], offset);
+            r.collapse(false);
+            s.removeAllRanges();
+            s.addRange(r);
+            return;
+        }
+    }
+}
+
+/* inserts text at the end of the block. 
+   does *not* trigger a transform. */
+function appendTextToBlock(txt, target) {
+    t = document.createTextNode(txt);
+    $(target).find(".box-source").append(t);
+    normalizeBlock(target);
+}
+
+/* inserts text at the beginning of the block. 
+   does *not* trigger a transform. */
+function prependTextToBlock(txt, target) {
+    t = document.createTextNode(txt);
+    $(target).find(".box-source").prepend(t);
+    normalizeBlock(target);
+}
+
+
 function insertText(str) {
     r = window.getSelection().getRangeAt(0);
     t = document.createTextNode(new String(str));
@@ -257,20 +291,24 @@ function insertNewline() {
     insertText("\n");
  }
 
-function normalizeActiveParagraph() {
+function normalizeBlock(target) {
+    $(target).get(0).normalize();
+    $(target).find(".box-source br").remove();
+    $(target).find(".box-source").append(mozDirtyStr);
+    $(target).get(0).normalize();    
+}
+
+function normalizeActiveBlock() {
     b = getActiveBlock();
     if(b.get(0)) {
-        b.get(0).normalize();
-        b.find(".box-source br").remove();
-        b.find(".box-source").append(mozDirtyStr);
-        b.get(0).normalize();
+        normalizeBlock(b);
     }
 }
 
 function splitParagraph() {
     b = getActiveBlock();
     if(b.get(0)) {
-        normalizeActiveParagraph();
+        normalizeActiveBlock();
         txt = readBlock($(b).find(".box-source").get(0));
         r = window.getSelection().getRangeAt(0).cloneRange();
         txt1 = "";  // first half of the paragraph source
@@ -305,11 +343,35 @@ function splitParagraph() {
 function joinPrevious() {
     b = getActiveBlock();
     if(b.get(0)) {
+        if(b.prev().get(0)) {
+            p = b.prev().get(0);
+            prevtxt = readBlock($(p).find(".box-source").get(0));
+            thistxt = readBlock(b.find(".box-source").get(0));
+            offset = prevtxt.length;
+            b.remove();
+            appendTextToBlock(thistxt, p);
+            transformBlock(p);
+            editBlock(p);
+            placeCursor(p,offset);
+        }
     }
 }
 
 function joinNext() {
-    
+    b = getActiveBlock();
+    if(b.get(0)) {
+        if(b.next().get(0)) {
+            n = b.next().get(0);
+            nexttxt = readBlock($(n).find(".box-source").get(0));
+            thistxt = readBlock(b.find(".box-source").get(0));
+            offset = thistxt.length;
+            $(n).remove();
+            appendTextToBlock(nexttxt, b);
+            transformBlock(b);
+            editBlock(b);
+            placeCursor(b,offset);
+        }
+    }    
 }
 
 function moveFocusToPreviousBlock() {
@@ -476,6 +538,14 @@ function handleKeydown(e) {
         case "meta+shift+down":
         case "ctrl+shift+down":
             moveActiveBlockDown();
+            return false;
+        case "meta+backspace":
+        case "ctrl+backspace":
+            joinPrevious();
+            return false;
+        case "meta+del":
+        case "ctrl+del":
+            joinNext();
             return false;
     }
     return true;
