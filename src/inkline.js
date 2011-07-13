@@ -369,7 +369,7 @@ function handleKeydown(e) {
     str = keyboardEventToString(e);
     switch(str) {
         case "ctrl+s":
-        case "cmd+s":
+        case "meta+s":
         case "f5":
             saveFile();
             return false;
@@ -379,31 +379,41 @@ function handleKeydown(e) {
         case "f11":
             toggleFullscreen();
             return false;
+        case "f12":
+            toggleTwoColumnMode();
+            return false;
         case "esc":
             toggleMenu("root");
             return false;
+        case "meta+t":
         case "ctrl+t":
             transformAll();
             return false;
         case "return":
             closeCurrentBlockAndAddNext();
             return false;
+        case "meta+return":
         case "ctrl+return":
             console.log("ctrl+enter pressed");
             insertNewline();
             return false;
+        case "meta+v":
         case "ctrl+v":
             pasteAtCursorPosition();
             return false;
+        case "meta+up":
         case "ctrl+up":
             moveFocusToPreviousBlock();
             return false;
+        case "meta+down":
         case "ctrl+down":
             moveFocusToNextBlock();
             return false;
+        case "meta+shift+up":
         case "ctrl+shift+up":
             moveActiveBlockUp();
             return false;
+        case "meta+shift+down":
         case "ctrl+shift+down":
             moveActiveBlockDown();
             return false;
