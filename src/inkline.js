@@ -520,7 +520,7 @@ function handleKeydown(e) {
             transformAll();
             return false;
         case "return":
-            closeCurrentBlockAndAddNext();
+            splitParagraph();
             return false;
         case "shift+return":
             console.log("ctrl+enter pressed");
@@ -528,7 +528,7 @@ function handleKeydown(e) {
             return false;
         case "meta+return":
         case "ctrl+return":
-            splitParagraph();
+            closeCurrentBlockAndAddNext();
             return false;
         case "meta+v":
         case "ctrl+v":
