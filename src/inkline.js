@@ -200,9 +200,11 @@ function editBlock(block) {
     outputElt = $(block).find(".box-output").get(0);   
     $(sourceElt).removeClass("hidden");
     $(outputElt).addClass("hidden");
-    r = window.getSelection().getRangeAt(0);
+    r = document.createRange();
     r.setStart($(sourceElt).get(0),0);
     r.collapse(true);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
     $(sourceElt).focus();
 }
 
