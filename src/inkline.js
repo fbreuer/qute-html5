@@ -436,6 +436,10 @@ function copyEverything() {
     cClipboard.set(saveDocumentToText(),"text");
 }
 
+function copyOutputToClipboard(mime) {
+    cClipboard.set(saveOutputToText(),mime);
+}
+
 
 // KEYBOARD HANDLING
 
@@ -648,13 +652,21 @@ function saveDocumentToText() {
     result = [];
     blockContents = $(".box-source");
     for(var i = 0; i < blockContents.length; i++) {
-                result.push( readBlock($(blockContents.get(i))) );
+        result.push( readBlock($(blockContents.get(i))) );
     }
     return result.join(blockSeparator);
 }
 
-function saveDocumentToFile(path) {
-    content = saveDocumentToText();
+function saveOutputToText() {
+    result = [];
+    blockContents = $(".box-output");
+    for(var i = 0; i < blockContents.length; i++) {
+        result.push( $(blockContents.get(i)).html() );
+    }
+    return result.join("\n");
+}
+
+function saveStringToFile(path, content) {
     var stream = cFile.open(path, "w");
     try {
         stream.write(content);
@@ -663,6 +675,14 @@ function saveDocumentToFile(path) {
     finally {
         stream.close();
     }
+}
+
+function saveDocumentToFile(path) {
+    saveStringToFile(path, saveDocumentToText());
+}
+
+function saveOutputToFile(path,mj) {
+    saveStringToFile(path, "<html><head>" + (mj ? "<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>" : "") + "</head><body>"  + saveOutputToText() + "</body></html>");
 }
 
 function fileName() {
@@ -772,6 +792,20 @@ function saveFile() {
     } else {
         saveDocumentToFile(filename);
     }
+}
+
+function exportHTML(mj) {
+    fp = cFilePicker.FilePicker();
+    fp.title = "Export HTML";
+    fp.mode = "save";
+    fp.show(function(x) {
+        if (x === undefined) {
+            console.log("Export HTML: nothing picked");
+        } else {
+            console.log("Export HTML: picked " + x);
+            saveOutputToFile(x,mj);
+        }
+    });     
 }
 
 function newFile() {

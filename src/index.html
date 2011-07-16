@@ -113,6 +113,10 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
   <div class="menu-page" id="menu-publish" style="display:none;">
     <a onclick="window.print();">print</a>
     <a onclick="copyEverything();">copy source to clipboard</a>
+    <a onclick="copyOutputToClipboard('text');">copy formatted output to clipboard (as text)</a>
+    <a onclick="copyOutputToClipboard('html');">copy formatted output to clipboard (as html)</a>
+    <a onclick="exportHTML(true);">export formatted output to html file (w/ MathJax)</a>
+    <a onclick="exportHTML(false);">export formatted output to html file (w/o MathJax)</a>
   </div>
   <div class="menu-page" id="menu-config" style="display:none;">
     <a onclick="showMenu('theme');event.stopPropagation();">themes</a>
