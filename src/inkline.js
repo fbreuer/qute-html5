@@ -550,6 +550,14 @@ function handleKeydown(e) {
         case "ctrl+shift+down":
             moveActiveBlockDown();
             return false;
+        case "alt+metaup":
+        case "alt+ctrl+up":
+            joinPrevious();
+            return false;
+        case "alt+meta+down":
+        case "alt+ctrl+down":
+            joinNext();
+            return false;
         case "backspace":
             if(window.getSelection().getRangeAt(0).collapsed && getCursorOffset() == 0) {
                 joinPrevious();
