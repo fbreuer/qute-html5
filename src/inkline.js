@@ -548,30 +548,24 @@ function handleKeydown(e) {
         case "ctrl+shift+down":
             moveActiveBlockDown();
             return false;
-        case "meta+backspace":
-        case "ctrl+backspace":
-            joinPrevious();
-            return false;
         case "backspace":
-            if(getCursorOffset() == 0) {
+            if(window.getSelection().getRangeAt(0).collapsed && getCursorOffset() == 0) {
                 joinPrevious();
                 return false;
             } else {
                 return true;
             }
         case "del":
-            off = getCursorOffset();
-            len = readBlock(getActiveBlock().find(".box-source").get(0)).length;
-            if(off == len) {
-                joinNext();
-                return false;
-            } else {
-                return true;
+            if(window.getSelection().getRangeAt(0).collapsed) {
+                off = getCursorOffset();
+                len = readBlock(getActiveBlock().find(".box-source").get(0)).length;
+                if(off == len) {
+                    joinNext();
+                    return false;
+                } else {
+                    return true;
+                }
             }
-        case "meta+del":
-        case "ctrl+del":
-            joinNext();
-            return false;
     }
     return true;
 }
