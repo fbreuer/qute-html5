@@ -496,8 +496,8 @@ function keyboardEventToString(event) {
 
 function handleKeydown(e) {
     // first handle special characters
-    str = keyboardEventToString(e);
-    switch(str) {
+    thestring = keyboardEventToString(e);
+    switch(thestring) {
         case "ctrl+s":
         case "meta+s":
         case "f5":
@@ -517,7 +517,11 @@ function handleKeydown(e) {
             return false;
         case "meta+t":
         case "ctrl+t":
-            transformAll();
+            if($(".box-output").filter(".hidden").length > 0) {
+                transformAll();
+            } else {
+                editBlock($(".box-container").get(0));
+            }
             return false;
         case "return":
             splitParagraph();
