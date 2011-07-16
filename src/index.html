@@ -24,7 +24,7 @@
         </script>
         <script type="text/javascript" src="lib/showdown.js"></script>
     <script type="text/javascript" src="inkline.js"></script>
-    <title>Qute v0.2</title>
+    <title>Qute v0.3</title>
 </head>
 
 <body spellcheck="false">
@@ -49,9 +49,11 @@ The **Q** in the top left corner opens the **menu**, which you can use to save a
 
 ## Keyboard Shortcuts
 
-**Enter** - begin new paragraph.
+**Enter** - split paragraph at the current cursor position.
 
-**Ctrl+Enter** - add new line to current paragraph.
+**Ctrl+Enter** - insert new empty paragraph.
+
+**Shift+Enter** - add new line to current paragraph.
 
 **Esc** - toggle menu.
 
@@ -61,15 +63,23 @@ The **Q** in the top left corner opens the **menu**, which you can use to save a
 
 **F11** - toggle fullscreen.
 
+**F12** - toggle two column mode.
+
 **Ctrl+T** - switch all paragraphs to display mode.
 
 **Ctrl+Up** and **Ctrl+Down** - change focus to previous/next paragraph.
 
 **Ctrl+Shift+Up** and **Ctrl+Shift+Down** - move current paragraph up/down.
 
+**Backspace** and **Del** - join paragraphs when the cursor is at the beginning/end of one.
+
+A note for **Mac users**: in the above list of keyboard shortcuts, you can use Cmd instead of Ctrl as well.
+
 ## Notes
 
 Qute saves and loads plain text that you can **edit with any other text editor**. Make sure, though, that your text editor uses **UTF-8** encoding and **Unix-style line endings** ("\n" instead of "\r\n"). **Paragraphs are separated by blank lines**, i.e., by the character sequence "\n\n".
+
+Qute does **not support undo and redo**. You may try Ctrl+Z and Ctrl+Y, but unpredictable things may happen.
 
 Qute is **experimental** software, so many things may not work. In particular, Qute comes **without warranty** of any kind.
 
@@ -86,15 +96,19 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
 <div id="menu" onclick="$('#menu').hide();" style="display:none;">
   <div class="menu-page" id="menu-root" style="display:none;">
     <a onclick="newFile();">new file</a>
-    <a onclick="openFile();">open file</a>
-    <a onclick="saveFile();">save file</a>
-    <a onclick="window.print();">print</a>
+    <a alt="F9" onclick="openFile();">open file</a>
+    <a alt="F5" onclick="saveFile();">save file</a>
     <!--<a onclick="alert('foo');">test</a>-->
-    <a onclick="copyEverything();">copy everything</a>
-    <a onclick="toggleFullscreen();">toggle fullscreen</a>
-    <a onclick="toggleTwoColumnMode();">toggle two-column mode (slow + experimental!)</a>
+    <a alt="F11" onclick="toggleFullscreen();">toggle fullscreen</a>
+    <a alt="F12" onclick="toggleTwoColumnMode();">toggle split view</a>
     <!-- does not work yet <a onclick="toggleScrollbar();">scrollbar</a> -->
+    <a onclick="showMenu('publish');event.stopPropagation();">publish</a>
     <a onclick="showMenu('config');event.stopPropagation();">config</a>
+    <a onclick="showMenu('help');event.stopPropagation();">help</a>
+  </div>
+  <div class="menu-page" id="menu-publish" style="display:none;">
+    <a onclick="window.print();">print</a>
+    <a onclick="copyEverything();">copy source to clipboard</a>
   </div>
   <div class="menu-page" id="menu-config" style="display:none;">
     <a onclick="showMenu('theme');event.stopPropagation();">themes</a>
@@ -114,6 +128,59 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
     <a onclick="setTheme('sky');">Sky</a>
     <a onclick="setTheme('desk');">Desk</a>
     <a onclick="setTheme('cute');">Cute</a>
+  </div>
+  <div class="menu-page" id="menu-help" style="display:none;">
+    <a onclick="showMenu('keyboard');event.stopPropagation();">keyboard shortcuts</a>
+    <a onclick="showMenu('about');event.stopPropagation();">about</a>
+  </div>
+  <div class="menu-page" id="menu-keyboard" style="display:none;">
+    <table style="font-size:80%">
+      <tr>
+        <td>Enter</td><td>split paragraph</td>
+      </tr>
+      <tr>
+        <td>Ctrl+Enter</td><td>insert new paragraph</td>
+      </tr>
+      <tr>
+        <td>Shift+Enter</td><td>add new line</td>
+      </tr>
+      <tr>
+        <td>Esc</td><td>toggle menu</td>
+      </tr>
+      <tr>
+        <td>F5</td><td>save file (also Ctrl+S)</td>
+      </tr>
+      <tr>
+        <td>F9</td><td>load file</td>
+      </tr>
+      <tr>
+        <td>F11</td><td>toggle fullscreen</td>
+      </tr>
+      <tr>
+        <td>F12</td><td>toggle split view</td>
+      </tr>
+      <tr>
+        <td>Ctrl+T</td><td>switch all paragraphs to display mode</td>
+      </tr>
+      <tr>
+        <td>Ctrl+Up/Down</td><td>change focus to prev/next paragraph</td>
+      </tr>
+      <tr>
+        <td>Ctrl+Shift+Up/Down</td><td>move paragraph up/down</td>
+      </tr>
+      <tr>
+        <td>Backspace</td><td>join with previous paragraph if cursor is at beginning</td>
+      </tr>
+      <tr>
+        <td>Delete</td><td>join with next paragraph if cursor is at end</td>
+      </tr>
+    </table>
+  </div>
+  <div class="menu-page" id="menu-about" style="display:none;text-align:center;">
+    <p style="font-size:120%;"><b>Qute 0.3</b></p>
+    <p>released July 17th, 2011</p>
+    <p><b>http://www.inkcode.net/qute</b></p>
+    <p>Copyright &#169; 2011 Felix Breuer</p>
   </div>
 </div>
 

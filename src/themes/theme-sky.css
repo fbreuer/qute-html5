@@ -13,7 +13,7 @@ body {
     border-left: 1px solid white;
 }
 
-/* TEXT: WHITE HALO */
+/* TEXT: Drop Shadow */
 
 .box, .box-source, .box-output, .box-button, #notify-area, #menu a {
     /*text-shadow: #fff 0px 0px 6px;*/
@@ -43,6 +43,8 @@ body {
 #menu {
     background-color: rgba(50,88,149,0.9);
     box-shadow: 0px 0px 4px #fff;
+    text-shadow: #fff 0px 0px 3px, #fff 0px 0px 2px, #fff 0px 0px 1px;
+    color: white;
 }
 
 #menu a {
