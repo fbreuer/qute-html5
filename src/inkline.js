@@ -224,17 +224,21 @@ function blockInEditMode(block) {
 function toggleBlock(block) {
     console.log("toggleBlock");
     if(blockInEditMode(block)) {
-        blocks = processBlock(block);
-        console.log("toggleBlock: transforming " + blocks.length + " blocks");
-        for(i = 0; i < blocks.length; i++) {
-            transformBlock(blocks[i]);
-        }
-        // remove cursor
-        window.getSelection().removeAllRanges();
+        finishEditingBlock(block);
     } else {
         editBlock(block);
     }
 }
+
+function finishEditingBlock(block) {
+    blocks = processBlock(block);
+    console.log("toggleBlock: transforming " + blocks.length + " blocks");
+    for(i = 0; i < blocks.length; i++) {
+        transformBlock(blocks[i]);
+    }
+    // remove cursor
+    window.getSelection().removeAllRanges();
+ }
 
 
 // EDITING
@@ -388,7 +392,7 @@ function joinNext() {
 function moveFocusToPreviousBlock() {
     block = getActiveBlock();
     prev = $(block).prev();
-    displayBlock(block);
+    finishEditingBlock(block);
     editBlock(prev);
     // place caret at end of paragraph
     node = $(prev).find(".box-source").get(0).lastChild;
@@ -403,7 +407,7 @@ function moveFocusToPreviousBlock() {
 function moveFocusToNextBlock() {
     block = getActiveBlock();
     next = $(block).next();
-    displayBlock(block);
+    finishEditingBlock(block);
     editBlock(next);
 }
 
