@@ -392,23 +392,27 @@ function joinNext() {
 function moveFocusToPreviousBlock() {
     block = getActiveBlock();
     prev = $(block).prev();
-    finishEditingBlock(block);
-    editBlock(prev);
-    // place caret at end of paragraph
-    node = $(prev).find(".box-source").get(0).lastChild;
-    r = window.getSelection().getRangeAt(0);
-    r.setStartAfter(node);
-    r.setEndAfter(node);
-    r.collapse(false);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(r);    
+    if(prev.length > 0) {
+        finishEditingBlock(block);
+        editBlock(prev);
+        // place caret at end of paragraph
+        node = $(prev).find(".box-source").get(0).lastChild;
+        r = window.getSelection().getRangeAt(0);
+        r.setStartAfter(node);
+        r.setEndAfter(node);
+        r.collapse(false);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(r);    
+    }
 }
 
 function moveFocusToNextBlock() {
     block = getActiveBlock();
     next = $(block).next();
-    finishEditingBlock(block);
-    editBlock(next);
+    if(next.length > 0) {
+        finishEditingBlock(block);
+        editBlock(next);
+    }
 }
 
 function moveActiveBlockUp() {
