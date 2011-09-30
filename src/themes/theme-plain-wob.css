@@ -1,0 +1,65 @@
+/* BACKGROUND AND FOREGROUND */
+
+body {
+    background-color: black;
+}
+
+.box, .box-source, .box-output, .box-button {
+    color: white;
+}
+
+.box-source {
+    border-left: 1px solid white;
+}
+
+/* WHITE SHEET */
+
+.column {
+    background-color: black;
+}
+
+/* TEXT: BLACK DROP SHADOW */
+
+#notify-area, #menu a {
+    color: black
+}
+
+/* TEXT: WHITE GLOW */
+
+.active .box-button, #menu a:hover {
+}
+
+
+/* NOTIFY AREA */
+
+#notify-area {
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    box-shadow: 0px 0px 4px #fff;
+    border-radius: 5px;
+}
+
+/* MENU */
+
+#menu {
+    background-color: rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 4px #fff;    
+    color: #fff;
+}
+
+#menu a {
+    color: #fff;
+    font-variant: small-caps;
+    text-align: center;
+}
+
+#menuanchor {
+    color: grey;
+    background-color: black;
+}
+
+/* BODY TEXT */
+
+.column a {
+    color: white;
+}
