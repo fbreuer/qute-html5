@@ -185,11 +185,13 @@ function transformBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);
     source = readBlock(sourceElt);
-    output = converter.makeHtml(source); // here, we apply showdown!
-    outputElt.innerHTML = output;
-    displayBlock(block);
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt]);
-}
+    outputElt.innerHTML = source;
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
+        [function(){
+                outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
+                displayBlock(block);
+            }]);
+ }
 
 function transformAll() {
     $(".box-container").each(function(i, e) { transformBlock(e); })
