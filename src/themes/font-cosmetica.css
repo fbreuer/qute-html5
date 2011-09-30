@@ -11,4 +11,5 @@ body, .box-source {
 
 .column code {
     font-family: Consolas, Monaco, "Bitstream Vera Sans Mono";
+	text-wrap: normal;
 }
