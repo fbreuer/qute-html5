@@ -322,8 +322,11 @@ function insertText(str) {
 }
 
 function insertNewline() {
+    offset = getCursorOffset();
     insertText("\n");
- }
+    b = getActiveBlock();
+    placeCursor(b,offset+1);
+}
 
 function normalizeBlock(target) {
     $(target).get(0).normalize();
@@ -438,7 +441,10 @@ function pasteAtCursorPosition() {
     if(text) {
         console.log("Paste!\n");
         console.log(text);
+        offset = getCursorOffset();
         insertText(text);
+        b = getActiveBlock();
+        placeCursor(b,offset+text.length);
     }
 }
 
