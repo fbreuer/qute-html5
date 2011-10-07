@@ -33,6 +33,7 @@ cFilePicker = require("file-picker");
 cHotkey = require("hotkey");
 cClipboard = require("clipboard");
 cPrefs = require("preferences-service");
+cCProcess = require("child_process");
 
 var filename = "";
 
@@ -824,6 +825,52 @@ function exportHTML(mj) {
     });     
 }
 
+function exportLaTeX() {
+    fp = cFilePicker.FilePicker();
+    fp.title = "Export LaTeX";
+    fp.mode = "save";
+    fp.show(function(x) {
+        if (x === undefined) {
+            console.log("Export LaTeX: nothing picked");
+        } else if (filename == "") {
+            console.log("Export LaTeX: you have to save first");
+        } else {
+            console.log("Export LaTeX: picked " + x);
+            saveFile();
+            notify("Running pandoc... If this does not appear to do anything, are you sure you have set the path to pandoc correctly?");
+            exe = $("#pandoc-exe").val();
+            cPrefs.set("pandoc-exe",exe);
+            cCProcess.spawn(exe, ["-f", "markdown", "-t", "latex", "-o", x, filename]);
+            notify("Running pandoc succeeded.");
+        }
+    });     
+}
+
+
+function exportPDF() {
+    if (filename == "") {
+        console.log("Export PDF: you have to save first");
+        notify("You have to save before you can export to PDF!");
+        return;
+    }
+    fp = cFilePicker.FilePicker();
+    fp.title = "Export PDF";
+    fp.mode = "save";
+    fp.show(function(x) {
+        if (x === undefined) {
+            console.log("Export PDF: nothing picked");
+        } else {
+            console.log("Export PDF: picked " + x);
+            saveFile();
+            notify("Running markdown2pdf... If this does not appear to do anything, are you sure you have set the path to markdown2pdf correctly?");
+            exe = $("#pandoc-m2p-exe").val();
+            cPrefs.set("pandoc-m2p-exe",exe);
+            cCProcess.spawn(exe, ["-o", x, filename]);
+            notify("Running markdown2pdf succeeded.");
+        }
+    });     
+}
+
 function newFile() {
     filename = "";
     $(".column").empty();
@@ -860,5 +907,7 @@ $(document).ready(function() {
 
     setFont(cPrefs.get("font","cosmetica"));
     setTheme(cPrefs.get("theme","subtle-dark"));
+    $("#pandoc-exe").val(cPrefs.get("pandoc-exe","C:\\Program Files (x86)\\Pandoc\\bin\\pandoc.exe"));
+    $("#pandoc-m2p-exe").val(cPrefs.get("pandoc-m2p-exe","C:\\Program Files (x86)\\Pandoc\\bin\\markdown2pdf.exe"));
 });
 

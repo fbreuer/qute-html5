@@ -118,6 +118,15 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
     <a onclick="copyOutputToClipboard('html');">copy formatted output to clipboard (as html)</a>
     <a onclick="exportHTML(true);">export formatted output to html file (w/ MathJax)</a>
     <a onclick="exportHTML(false);">export formatted output to html file (w/o MathJax)</a>
+    <div style="font-size: 80%">
+    <p>Pandoc export options</p>
+    <form action="form_action.asp" method="get" onclick="event.stopPropagation();">
+	Path to Pandoc executable: <input id="pandoc-exe" type="text" name="fname"><br />
+          Path to Markdown2pdf executable: <input id="pandoc-m2p-exe" type="text" name="lname" /><br />
+</form>
+	</div>
+    <a onclick="exportLaTeX();">export to LaTeX (requires Pandoc)</a>
+    <a onclick="exportPDF();">export to PDF via LaTeX (requires Pandoc)</a>
   </div>
   <div class="menu-page" id="menu-config" style="display:none;">
     <a onclick="showMenu('theme');event.stopPropagation();">themes</a>
