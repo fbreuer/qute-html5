@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "MgOpen Cosmetica";
+    src: url("mgopencosmeticaregular.ttf");
+}
+
+body, .box-source {
+    font-family: "Optima", "Optima LT Std", "MgOpen Cosmetica";
+}
+
+/* BODY TEXT */
+
+.column code {
+    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono";
+	text-wrap: normal;
+}

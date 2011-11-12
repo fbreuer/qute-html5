@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "Gentium Book Basic";
+    src: url("/fonts/genbkbasr.ttf");
+}
+
+body {
+    font-family: "Gentium Book Basic";
+}
+
+.box-source {
+    font-family: "Gentium Book Basic"; 
+}
+
+#menu, .box-output, .box-source {
+    font-size: 14pt;
+}
+
+/* BODY TEXT */
+
+.column code {
+    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono";
+}
