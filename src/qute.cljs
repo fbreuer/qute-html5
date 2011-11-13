@@ -71,7 +71,7 @@
 
 (defn block-to-html [doc v expanded depth]
   (if expanded
-    (html/html [:div.block
+    (html/html [:div.block {:quteid v}
                 [:div.block-header]
                 [:div.block-controls]
                 [:textarea.block-source {:rows 5}
@@ -85,6 +85,7 @@
             [qute.blocks :as qb]
             [pinot.dom :as dom]
             [pinot.events :as events]
+            [pinot.html :as html]
             [cljs.reader :as reader]
             [clojure.browser.repl :as repl]))
 
