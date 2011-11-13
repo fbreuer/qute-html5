@@ -12,14 +12,17 @@
 <vnodes>
 <v t="fbreuer.20111104102808.1226" a="E"><vh>Qute</vh>
 <v t="fbreuer.20111104102808.1227" a="E"><vh>Qute-TODO</vh>
-<v t="fbreuer.20111104102808.1228" a="E"><vh>Release 0.4</vh>
-<v t="fbreuer.20111104102808.1239"><vh>Blog Post</vh></v>
-<v t="fbreuer.20111104102808.1231"><vh>Freshmeat announcement</vh></v>
-</v>
 <v t="fbreuer.20111104102808.1232" a="E"><vh>Branch 0.5</vh>
 <v t="fbreuer.20111104102808.1240"><vh>UI Mockup</vh></v>
-<v t="fbreuer.20111104102808.1233"><vh>Create ClojureScript spike solution</vh></v>
-<v t="fbreuer.20111104102808.1234"><vh>make build script</vh></v>
+<v t="fbreuer.20111112151513.1291"><vh>switching between different modes</vh></v>
+<v t="fbreuer.20111112151513.1283"><vh>rudimentary editing ui</vh></v>
+<v t="fbreuer.20111112151513.1287"><vh>save to file</vh></v>
+<v t="fbreuer.20111112151513.1285"><vh>ometa integration</vh></v>
+<v t="fbreuer.20111112151513.1286"><vh>export source files</vh></v>
+<v t="fbreuer.20111112151513.1288"><vh>sophisticated attribute editor</vh></v>
+<v t="fbreuer.20111112151513.1289"><vh>attribute editing</vh></v>
+<v t="fbreuer.20111112151513.1290"><vh>popup menu</vh></v>
+<v t="fbreuer.20111112151513.1284"><vh>links in attributes</vh></v>
 </v>
 </v>
 <v t="fbreuer.20111104102808.1256" a="E"><vh>Notes</vh>
@@ -61,17 +64,12 @@
 <tnodes>
 <t tx="fbreuer.20111104102808.1226"></t>
 <t tx="fbreuer.20111104102808.1227"></t>
-<t tx="fbreuer.20111104102808.1228"></t>
-<t tx="fbreuer.20111104102808.1231"></t>
 <t tx="fbreuer.20111104102808.1232"></t>
-<t tx="fbreuer.20111104102808.1233"></t>
-<t tx="fbreuer.20111104102808.1234"></t>
 <t tx="fbreuer.20111104102808.1235"></t>
 <t tx="fbreuer.20111104102808.1236">Drawbacks:
     
     * Leo is constantly complaining about orphan nodes. Is there a way to turn this off?
     * Leo does not support Clojure syntax.</t>
-<t tx="fbreuer.20111104102808.1239"></t>
 <t tx="fbreuer.20111104102808.1240"></t>
 <t tx="fbreuer.20111104102808.1241">old buildsystem, currently we use leiningen and cljs-watch</t>
 <t tx="fbreuer.20111104102808.1242">import os
@@ -278,5 +276,28 @@ M-x rename-buffer &lt;RET&gt; [name] &lt;RET&gt;</t>
 <t tx="fbreuer.20111112151513.1282">pref("gfx.direct2d.disabled", true);
 pref("layers.acceleration.disabled", true);
 </t>
+<t tx="fbreuer.20111112151513.1283">* attribute editing via one large text field
+* no comprehensive keybindings/no comprehensive mouse interface</t>
+<t tx="fbreuer.20111112151513.1284"></t>
+<t tx="fbreuer.20111112151513.1285"></t>
+<t tx="fbreuer.20111112151513.1286"></t>
+<t tx="fbreuer.20111112151513.1287">via server</t>
+<t tx="fbreuer.20111112151513.1288"></t>
+<t tx="fbreuer.20111112151513.1289">for each key/value pair, a popup window: crude but effective for a first iteration</t>
+<t tx="fbreuer.20111112151513.1290"></t>
+<t tx="fbreuer.20111112151513.1291">4 modes for each block:
+    
+    * display
+    * edit-contents
+    * edit-attributes
+    * collapsed
+    
+maybe, editing attributes and editing contents are independent concerns. how about using 3 modes instead:
+    
+    * display
+    * edit
+    * collapsed
+    
+and toggle, independently of the mode, whether attributes are shown or not.</t>
 </tnodes>
 </leo_file>
