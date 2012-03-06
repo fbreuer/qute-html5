@@ -46,6 +46,10 @@ function togglePanel() {
     $("#panelslider").slideToggle();
 }
 
+function toggleCodePanel() {
+    $("#code-panel").toggle();
+}
+
 function toggleFullscreen() {
     cFullscreen.toggle(window);
 }
@@ -527,6 +531,9 @@ function handleKeydown(e) {
         case "f9":
             openFile();
             return false;
+        case "f8":
+            toggleCodePanel();
+            return false;
         case "f11":
             toggleFullscreen();
             return false;
@@ -903,6 +910,7 @@ $(document).ready(function() {
     loadDocumentFromText(txt.replace("&gt;",">"));
 
     $("#notify-area").hide();
+    $("#code-panel").hide();
     window.resizeTo(960,650);
 
     setFont(cPrefs.get("font","cosmetica"));

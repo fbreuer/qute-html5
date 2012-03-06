@@ -103,12 +103,18 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
 <div id="notify-area">
 </div>
 
+<div id="code-panel">
+  <textarea id="code">
+  </textarea>
+</div>
+
 <div id="menu" onclick="$('#menu').hide();" style="display:none;">
   <div class="menu-page" id="menu-root" style="display:none;">
     <a onclick="newFile();">new file</a>
     <a alt="F9" onclick="openFile();">open file</a>
     <a alt="F5" onclick="saveFile();">save file</a>
     <!--<a onclick="alert('foo');">test</a>-->
+    <a alt="F8" onclick="toggleCodePanel();">toggle code panel</a>
     <a alt="F11" onclick="toggleFullscreen();">toggle fullscreen</a>
     <a alt="F12" onclick="toggleTwoColumnMode();">toggle split view</a>
     <a alt="F12" onclick='notify(cPrefs.get("gfx.direct2d.disable")+" and "+cPrefs.get("layers.acceleration.disable"));'>test</a>
