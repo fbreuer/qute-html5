@@ -186,16 +186,49 @@ function deleteEmptyBlocks() {
 
 // TRANSFORMATION
 
+// transformOMeta takes two strings. markup is a string containing the
+// markup to be transformed. transformer is a string containing the
+// OMeta code used to transform the markup. transformer needs to
+// define a language Lang with a non-terminal named 'root'.
+function transformOMeta(markup,transformer) {
+    // the following function is taken from the OMeta/JS source
+    translateCode = function(s) {
+        console.log("translating OMeta code...")
+        console.log("input is: " + s)
+        var translationError = function(m, i) { alert("Translation error - please tell Alex about this!"); throw fail },
+            tree             = BSOMetaJSParser.matchAll(s, "topLevel", undefined, function(m, i) { throw objectThatDelegatesTo(fail, {errorPos: i}) })
+        console.log("OMetaJS Parse tree: " + tree)
+        jscode = BSOMetaJSTranslator.match(tree, "trans", undefined, translationError) 
+        console.log("Generated JS code: " + jscode)
+        return jscode
+    }
+    try {
+        jscode = translateCode(transformer)
+    } catch(e) {
+        notify("Your OMeta code is not correct. \n" + e.name + ":\n" + e.message);
+    }
+    try {
+        return eval(jscode + "; Lang.matchAll(markup,'root');");
+    } catch(e) {
+        return notify("Your markup did not transform correctly. \n" + e.name + ":\n" + e.message);
+    }    
+}
+
 function transformBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);
     source = readBlock(sourceElt);
     outputElt.innerHTML = source;
+    // new code: OMeta
+    outputElt.innerHTML = transformOMeta(source,$("#code").val());
+    displayBlock(block);
+    // old code: MathJax + Showdown
+    /*
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
         [function(){
                 outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
                 displayBlock(block);
-            }]);
+            }]);*/
  }
 
 function transformAll() {
