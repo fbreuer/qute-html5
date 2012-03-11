@@ -10,6 +10,7 @@ body, .box-source {
 /* BODY TEXT */
 
 .column code {
-    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono";
-	text-wrap: normal;
+    font-family: monospace, Consolas, Monaco, "Bitstream Vera Sans Mono";
+    font-size: 80%;
+    white-space: pre-wrap;
 }

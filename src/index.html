@@ -23,6 +23,7 @@
             });
         </script>
         <script type="text/javascript" src="lib/showdown.js"></script>
+    <script type="text/javascript" src="default-txt.js"></script>
     <script type="text/javascript" src="inkline.js"></script>
     <!-- start OMeta stuff -->
     <!--<script src="lib/ometa-js/prototype.js"></script>
@@ -44,7 +45,7 @@
 <a id="menuanchor" onclick="showMenu('root');">Q<!--<img src="img/icon-36.png"></img>--></a>
 
 <div id="scroll-area">
-<div class="column"># Welcome to Qute!
+<div id="thecolumn" class="column"><![CDATA[# Welcome to Qute!
 
 6*(4+3)
 
@@ -65,7 +66,42 @@ The **Q** in the top left corner opens the **menu**, which you can use to save a
 
 This release, Qute 0.4, is a small bugfix release. There are a few known issues, which are listed at http://github.com/fbreuer/qute-html5/issues.
 
-For the next release, Qute 0.5, a rewrite of large parts of Qute is planned, which means more features and a cleaner implementation at the expense of some convenience functions.  
+For the next release, Qute 0.5, a rewrite of large parts of Qute is
+  planned, which means more features and a cleaner implementation at
+  the expense of some convenience functions.
+
+## Custom Languages
+
+Qute allows you to define and transform your own custom markup languages. This feature is still very experimental, but here is a small demo. Consider the following calculator language called "mylang", defined in OMeta syntax.
+
+@ometa:mylang
+ometa Calc <: Parser {
+  var           = spaces letter:x      -> x,
+  num           = num:n digit:d        -> (n*10 + d*1)
+                | digit:d              -> (d*1),
+  primaryExpr   = spaces var:x         -> self.vars[x]
+                | spaces num:n         -> n
+                | "(" expr:r ")"       -> r,
+  mulExpr       = mulExpr:x "*" primaryExpr:y -> ( x * y )
+                | mulExpr:x "/" primaryExpr:y -> ( x / y )
+                | primaryExpr,
+  addExpr       = addExpr:x "+" mulExpr:y     -> ( x + y )
+                | addExpr:x "-" mulExpr:y     -> ( x - y )
+                | mulExpr,
+  expr          = var:x  "=" expr:r           -> (self.vars[x] = r)
+                | addExpr,
+  doit          = (expr:r)* spaces end        -> r
+}
+Calc.initialize = function() {  this.vars = {}; }
+function(source) {return Calc.matchAll(source,'expr')}
+
+Then, a paragraph containing an expression in this small caluclator language such as
+ 
+    @mylang 6*7+3*(4+5)/7
+ 
+will be automatically transformed into its result. The prefix @mylang tells Qute which language the paragraph is written in.
+
+@mylang 6*7+3*(4+5)/7
 
 ## Keyboard Shortcuts
 
@@ -110,7 +146,7 @@ Qute is **experimental** software, so many things may not work. In particular, Q
 Qute is built on many great pieces of software, in particular **Showdown**, **MathJax** and **Chromeless**.
 
 Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
-
+]]>
 </div>
 </div>
 

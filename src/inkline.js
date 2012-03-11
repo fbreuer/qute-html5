@@ -184,6 +184,40 @@ function deleteEmptyBlocks() {
 }
 
 
+// TRANSFORMERS
+
+
+// a transformer should be thought of as a function that takes a
+// source string and returns an html string. however, due to mathjax
+// intricacies this is not sufficient. so, a transformer is a function
+// that takes a source string, a block and an outputElt and runs the
+// transformation. if mathjax is not needed, the createTransformWrapper
+// function can be used.
+var transformers = { 
+    'md': function(source,block,outputElt) {
+        outputElt.innerHTML = source
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
+                          [function(){
+                              outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
+                              displayBlock(block);
+                          }]);
+    }
+};
+
+function identityTransform(source) {
+    return "<div style='font-family:monospace; font-size:80%; white-space: pre-wrap'>" + source + "</div>"
+}
+
+function createTransformWrapper(f) {
+    return function(source,block,outputElt) {
+        html = f(source)
+        outputElt.innerHTML = html
+        displayBlock(block)
+    }
+}
+
+
+
 // TRANSFORMATION
 
 // transformOMeta takes two strings. markup is a string containing the
@@ -214,22 +248,70 @@ function transformOMeta(markup,transformer) {
     }    
 }
 
+function ometa2js(code) {
+    console.log("translating OMeta code...")
+    console.log("code is: \n" + code)
+    translationError = function(m, code) { alert("Translation error - please tell Alex about this!"); throw fail }
+    tree = BSOMetaJSParser.matchAll(code, "topLevel", undefined, function(m, i) { throw objectThatDelegatesTo(fail, {errorPos: i}) })
+    console.log("OMetaJS Parse tree: \n" + tree)
+    jscode = BSOMetaJSTranslator.match(tree, "trans", undefined, translationError) 
+    console.log("Generated JS code: \n" + jscode)
+    return jscode
+}
+
+function processOMeta(code) {
+    jscode = ometa2js(code)
+    return eval(jscode)
+}
+
 function transformBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);
     source = readBlock(sourceElt);
-    outputElt.innerHTML = source;
-    // new code: OMeta
-    outputElt.innerHTML = transformOMeta(source,$("#code").val());
-    displayBlock(block);
-    // old code: MathJax + Showdown
-    /*
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
-        [function(){
-                outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
-                displayBlock(block);
-            }]);*/
- }
+    // check if the first characters form a sequence of the form @key:param
+    regexp = /^(@(\w*)(:(\w*))?\s)?((.|\n)*)/m
+    // example
+    // regexp.exec("@foo:bar Hello World!\nHow are you?")
+    // ["@foo:bar Hello World!\nHow are you?", "@foo:bar", "foo", ":bar", "bar", "Hello World!\nHow are you?", "?"]
+    result = regexp.exec(source)
+    hasprefix = (result[1] != null)
+    language = result[2]
+    param = result[4]
+    content = result[5]
+    if(hasprefix && language == "ometa") {
+        // this block defines a transformer
+        console.log("Found a block in the OMeta language...")
+        if(param == null) {
+            notify("You forgot to name your language! Begin the block with '@ometa:[yourlanguage]'.")
+        } else { 
+            // we process the ometa code and add the transformer to
+            // the map of transformers
+            try {
+                trafo = processOMeta(content)
+                if(typeof trafo == "function") {
+                    transformers[param] = createTransformWrapper(trafo)
+                    console.log("New transformer for language " + param + " added to collection of transformers.")
+                }
+            } catch(e) {
+                msg = "Your OMeta code is not correct. \n" + e.name + ":\n" + e.message
+                notify(msg)
+                console.log(msg)
+            }
+        }
+    }
+    // we transform the block content and display it
+    var transformername = "md" // the defaulttransformer is "md"
+    if(hasprefix && language != null) {
+        transformername = language
+    }
+    var thetransformer = transformers[transformername]
+    if(thetransformer == null) { 
+        // if we don't have a custom transformer for the language, we
+        // use the identity transform
+        thetransformer = createTransformWrapper(identityTransform)
+    }
+    thetransformer(content,block,outputElt)
+}
 
 function transformAll() {
     $(".box-container").each(function(i, e) { transformBlock(e); })
@@ -939,8 +1021,12 @@ function notify(str) {
 $(document).ready(function() {
     //cUI.setIcon().title = "Qute";
     //cUI.setIcon().imageSpec = "icon-512.png";
-    txt = $(".column").html();
-    loadDocumentFromText(txt.replace("&gt;",">"));
+    txt = $(".column").html()
+    //loadDocumentFromText(txt.replace(/&gt;/g,">"));
+    txt = defaulttxt
+    //txt = document.getElementById('thecolumn').childNodes[1].nodeValue
+    console.log("Initial content:\n"+txt)
+    loadDocumentFromText(txt)
 
     $("#notify-area").hide();
     $("#code-panel").hide();

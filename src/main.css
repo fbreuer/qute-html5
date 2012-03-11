@@ -13,6 +13,10 @@ body {
     height: 100%;
 }
 
+code, pre {
+    font-family: monospace;
+}
+
 .box, .box-source, .box-output, .box-button {
     background: transparent;
 }
