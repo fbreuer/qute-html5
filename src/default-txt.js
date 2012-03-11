@@ -1,7 +1,5 @@
 var defaulttxt = "# Welcome to Qute!\n\
 \n\
-6*(4+3)\n\
-\n\
 **Qute** is an experimental text editor. You can learn more about it at:\n\
 \n\
 &gt; **http://www.inkcode.net/qute**\n\

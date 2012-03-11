@@ -1012,12 +1012,7 @@ function notify(str) {
 }
         
 $(document).ready(function() {
-    //cUI.setIcon().title = "Qute";
-    //cUI.setIcon().imageSpec = "icon-512.png";
-    txt = $(".column").html()
-    //loadDocumentFromText(txt.replace(/&gt;/g,">"));
     txt = defaulttxt
-    //txt = document.getElementById('thecolumn').childNodes[1].nodeValue
     console.log("Initial content:\n"+txt)
     loadDocumentFromText(txt)
 
