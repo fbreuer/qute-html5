@@ -206,7 +206,16 @@ function identityTransform(source) {
 
 function errorTransform(msg,pos) {
     return function(source){ return "<div style='font-family:monospace; font-size:80%; white-space: pre-wrap'>" + source.substring(0,pos) + "<span style='color: yellow'>" + msg + "</span>" + source.substring(pos,source.length) + "</div>"}
-    
+}
+
+function parseError(m,i) {
+    // TODO: make use of the object m
+    throw objectThatDelegatesTo(fail, {errorPos: i, errorMsg: "Parse Error"})
+}
+
+function translationError(m,i) {
+    // TODO: make use of the object m
+    throw objectThatDelegatesTo(fail, {errorPos: i, errorMsg: "Translation Error"})
 }
 
 function createTransformWrapper(f) {
@@ -224,8 +233,7 @@ function createTransformWrapper(f) {
 function ometa2js(code) {
     console.log("translating OMeta code...")
     console.log("code is: \n" + code)
-    translationError = function(m, code) { alert("Translation error - please tell Alex about this!"); throw fail }
-    tree = BSOMetaJSParser.matchAll(code, "topLevel", undefined, function(m, i) { throw objectThatDelegatesTo(fail, {errorPos: i}) })
+    tree = BSOMetaJSParser.matchAll(code, "topLevel", undefined, parseError)
     console.log("OMetaJS Parse tree: \n" + tree)
     jscode = BSOMetaJSTranslator.match(tree, "trans", undefined, translationError) 
     console.log("Generated JS code: \n" + jscode)
@@ -288,7 +296,7 @@ function transformBlock(block) {
     } catch(e) {
         pos = (e.errorPos != undefined) ? e.errorPos : 0
         // msg = "Parse error '" + e.name + " " + e.massage + "' :"
-        msg = "Parse error:"
+        msg = ((e.errorMsg != undefined) ? e.errorMsg : "Parse Error") + ":"
         console.log("There was a parse error at pos " + pos + " in the block:\n" + content)
         createTransformWrapper(errorTransform(msg,pos))(content,block,outputElt)
     }

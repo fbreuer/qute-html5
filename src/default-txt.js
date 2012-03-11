@@ -44,7 +44,7 @@ ometa Calc <: Parser {\n\
   doit          = (expr:r)* spaces end        -> r\n\
 }\n\
 Calc.initialize = function() {  this.vars = {}; }\n\
-function(source) {return Calc.matchAll(source,'doit')}\n\
+function(source) {return Calc.matchAll(source,'doit',undefined,parseError)}\n\
 \n\
 Then, a paragraph containing an expression in this small caluclator language, such as for example\n\
  \n\
@@ -60,9 +60,12 @@ x=6\n\
 y=5+3\n\
 x*(y-1)\n\
 \n\
-You may note that the above language does not allow for negative numbers. Entering a negative number will result in a parse error. Parse errors are reported like this:\n\
+You may note that the above language does not allow for unary negation. Entering a negative number will result in a parse error. Parse errors are reported like this:\n\
 \n\
-@mylang -3+7\n\
+@mylang\n\
+x=6\n\
+y=-5+3\n\
+x*(y-1)\n\
 \n\
 Check out the next development version of Qute for a more useful example of a custom language.\n\
 \n\
