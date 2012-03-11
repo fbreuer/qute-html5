@@ -153,25 +153,6 @@ Feedback is very welcome! Visit **http://www.inkcode.net/qute** to get in touch.
 <div id="notify-area">
 </div>
 
-<div id="code-panel">
-  <textarea id="code">
-ometa Lang {
-  digit    = ^digit:d                 -> d.digitValue(),
-  number   = number:n digit:d         -> (n * 10 + d)
-           | digit,
-  addExpr  = addExpr:x '+' mulExpr:y  -> ['add', x, y]
-           | addExpr:x '-' mulExpr:y  -> ['sub', x, y]
-           | mulExpr,
-  mulExpr  = mulExpr:x '*' primExpr:y -> ['mul', x, y]
-           | mulExpr:x '/' primExpr:y -> ['div', x, y]
-           | primExpr,
-  primExpr = '(' root:x ')'           -> x
-           | number:n                 -> ['num', n],
-  root     = addExpr
-}
-  </textarea>
-</div>
-
 <div id="menu" onclick="$('#menu').hide();" style="display:none;">
   <div class="menu-page" id="menu-root" style="display:none;">
     <a onclick="newFile();">new file</a>
