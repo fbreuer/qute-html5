@@ -44,15 +44,25 @@ ometa Calc <: Parser {\n\
   doit          = (expr:r)* spaces end        -> r\n\
 }\n\
 Calc.initialize = function() {  this.vars = {}; }\n\
-function(source) {return Calc.matchAll(source,'expr')}\n\
+function(source) {return Calc.matchAll(source,'doit')}\n\
 \n\
 Then, a paragraph containing an expression in this small caluclator language, such as for example\n\
  \n\
-    @mylang 6*7+3*(4+5)/7\n\
+    @mylang\n\
+    x=6\n\
+    y=5+3\n\
+    x*(y-1)\n\
  \n\
 will be automatically transformed into its result. The prefix @mylang tells Qute which language the paragraph is written in. Here is the result:\n\
 \n\
-@mylang 6*7+3*(4+5)/7\n\
+@mylang\n\
+x=6\n\
+y=5+3\n\
+x*(y-1)\n\
+\n\
+You may note that the above language does not allow for negative numbers. Entering a negative number will result in a parse error. Parse errors are reported like this:\n\
+\n\
+@mylang -3+7\n\
 \n\
 Check out the next development version of Qute for a more useful example of a custom language.\n\
 \n\
@@ -90,7 +100,7 @@ A note for **Mac users**: in the above list of keyboard shortcuts, you can use C
 \n\
 ## Notes\n\
 \n\
-Qute saves and loads plain text that you can **edit with any other text editor**. Make sure, though, that your text editor uses **UTF-8** encoding and **Unix-style line endings** ('\n' instead of '\r\n'). **Paragraphs are separated by blank lines**, i.e., by the character sequence '\n\n'.\n\
+Qute saves and loads plain text that you can **edit with any other text editor**. Make sure, though, that your text editor uses **UTF-8** encoding and **Unix-style line endings** ('\\n' instead of '\\r\\n'). **Paragraphs are separated by blank lines**, i.e., by the character sequence '\\n\\n'.\n\
 \n\
 Qute does **not support undo and redo**. You may try Ctrl+Z and Ctrl+Y, but unpredictable things may happen.\n\
 \n\
