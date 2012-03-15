@@ -1,0 +1,107 @@
+# Towards a new Language
+
+Qute is in need of a new default syntax. 
+
+* It should be relatively easy to parse and easy to extend.
+* It should allow text, math, code and environments.
+* It should be convenient to type by hand.
+
+Skribe goes in the right direction. But it is not quite as convenient as I would like.
+
+## Examples
+
+Let's start with an example. The following is a snippet from one of my math papers.
+
+@ignore
+Let $p(k)$ be a polynomial in $k$ of degree at most $d$. Then there exist coefficients $h^*_i$ and $f^*_i$ for $i=0,\ldots,d$ such that
+\begin{eqnarray}
+p(k) = \sum_{i=0}^d h^*_i {k+d-i \choose d} = \sum_{i=0}^d f^*_i {k-1 \choose i}.
+\end{eqnarray}
+The coefficients $h^*_i$ and $f^*_i$ depend both on $p$ and on $d$, so we will sometimes write $h^*_i(p,d)$ and $f^*_i(p,d)$ to make this dependency explicit. The vectors $(h^*_0,\ldots,h^*_d)$ and $(f^*_0,\ldots,f^*_d)$ are called the \emph{$h^*$- and $f^*$-vectors} of $p$ and their entries are the \emph{$h^*$- and $f^*$-coefficients} of $p$, respectively. Note that the $h^*$-vector also goes by the name of Ehrhart $\delta$-vector. \cite{Stapledon2009} Whenever we refer to the $h^*$- or $f^*$-vector of an integral polytope or polytopal complex $P$, we mean the $h^*$- or $f^*$-vector of its Ehrhart polynomial $L_P$. For more details on these vectors and, most importantly, the motivation for defining them we refer the reader to Section~\ref{sec:prelim-f-and-h}.
+
+How would I want this to look in source?
+
+@ignore Let $p(k)$ be a polynomial in $k$ of degree at most $d$. Then there exist coefficients $h^*_i$ and $f^*_i$ for $i=0,\ldots,d$ such that 
+,(eqnarray 
+   $p(k) = \sum_{i=0}^d h^*_i {k+d-i \choose d} = \sum_{i=0}^d f^*_i {k-1 \choose i}.$
+)
+The coefficients $h^*_i$ and $f^*_i$ depend both on $p$ and on $d$, so we will sometimes write $h^*_i(p,d)$ and $f^*_i(p,d)$ to make this dependency explicit. The vectors $(h^*_0,\ldots,h^*_d)$ and $(f^*_0,\ldots,f^*_d)$ are called the \emph [$h^*$- and $f^*$-vectors]\ of $p$ and their entries are the ,(emph [$h^*$- and $f^*$-coefficients]) of $p$, respectively. Note that the $h^*$-vector also goes by the name of Ehrhart $\delta$-vector. ,(cite "Stapledon2009") Whenever we refer to the $h^*$- or $f^*$-vector of an integral polytope or polytopal complex $P$, we mean the $h^*$- or $f^*$-vector of its Ehrhart polynomial $L_P$. For more details on these vectors and, most importantly, the motivation for defining them we refer the reader to Section,(nbsp),(ref "sec:prelim-f-and-h").
+
+We also want to have custom commands in Math mode, without relying on MathJax macro expansion facilities. But maybe I should leave this for later.
+
+## Toggles between text, math and code
+
+Here are three simple parse rules.
+
+* Math is delimited by "\$". The string between the delimiting "\$" is parsed *only* according to math rules, i.e., for the moment, this is not touched at all and left entirely to MathJax. All literal "\$" in math mode have to be escaped. As this is the same convention in TeX, we even leave the escape characters alone.
+* Code is delimited by ",(" and ")" or "@(" and ")". The string in between these delimiters parsed according to scheme rules. This might turn out to be a problem for some programming languages, but we'll have to see.
+* Text is delimited by "[" and "]".
+
+In fact, "code" is the wrong word. Code is not "code" at all. It is just that we are defining a parse tree *explicitly* here.
+
+## A First Implementation
+
+@ometa:qute
+ometa Qute <: Parser {
+  delimiter = '[' | ']' | '{' | '}' | '$',
+  text = '[' textbody:t ']' -> t,
+  textbody = (str | math | list)*:els -> [#text].concat(els),
+  list = '{' ((text | math | list | symbol):a spaces -> a)*:as '}' -> [#list].concat(as),
+  math = '$' tex:t '$' -> [#math].concat(t),
+  escapeChar = '\\' char:c -> c,
+  str = (escapeChar:c -> c | ~delimiter char)+:cs -> [#str].concat(cs.join("")),
+  tex = (escapeChar:c -> ["\\",c].join("") | ~'$' char)*:cs -> [#tex].concat(cs.join("")),
+  symbol = (~(space|delimiter) char)+:cs -> [#sym, cs.join("")]
+}
+Qute.initialize = function() { this.vars = {}; }
+function(source) {return Qute.matchAll(source,'textbody',undefined, parseError)}
+
+
+
+Here are some tests.
+
+@qute foo bar baz
+
+@qute Here comes a longer example, including {bold}.
+
+@qute Here comes a longer example with escape \$, including {bold [text]}.
+
+@qute Here comes a longer example with escape \$, including {bold [bold text]}, lists with more complicated nesting such as {itemize [First item,] [Second item, and] [Third item.] } and of course TeX such as $x^2+y^2$. By the way, it is important that the backslash character \\ does not need to be escaped in math mode, because of $\begin{foo}blah\end{bar}$. And it is not!
+
+## An Implementation with Translator
+
+@ometa:qute2 
+ometa Qute <: Parser { 
+  delimiter = '[' | ']' | '{' | '}' | '$',
+  text = '[' textbody:t ']' -> t, 
+  textbody = (str | math | list)*:els -> [#text].concat(els), 
+  list = '{' ((text | math | list | symbol):a spaces -> a)*:as '}' -> [#list].concat(as), 
+  math = '$' tex:t '$' -> [#math].concat(t), 
+  escapeChar = '\\' char:c -> c, 
+  str = (escapeChar:c -> c | ~delimiter char)+:cs -> [#str].concat(cs.join("")), 
+  tex = (escapeChar:c -> ["\\",c].join("") | ~'$' char)*:cs -> cs.join(""), 
+  symbol = (~(space|delimiter) char)+:cs -> [#symbol, cs.join("")] 
+} 
+Qute.initialize = function() { this.vars = {}; } 
+ometa QuteTranslator {
+  trans = [:t apply(t):ans] -> ans,
+  text trans*:xs -> xs.join(""),
+  list trans*:xs -> ("<span style='border: 1px solid white; padding: 1px 5px 1px 5px'>" + xs.join("") + "</span>"),
+  str :s -> ("<span style='color:white;font-family: MgOpen Cosmetica; padding: 1px 5px 1px 5px'>" + s + "</span>"),
+  math :s -> ("<script type='math/tex'>" + s + "</script>"), 
+  symbol :s -> ("<span style='color:yellow;font-family: monospace; font-size:80%;'>" + s + "</span>")
+}
+QuteTranslator.initialize = function() {this.vars = {};}
+function(source) {
+  tree = Qute.matchAll(source,'textbody',undefined, parseError);
+  return QuteTranslator.match(tree,'trans',undefined,translationError);
+}
+
+
+
+### Tests
+
+@qute2 Here comes a longer example with escape \$, including {bold [bold text]}, lists with more complicated nesting such as {itemize [First item,] [Second item, and] [Third item.] } and of course TeX such as $x^2+y^2$. By the way, it is important that the backslash character \\ does not need to be escaped in math mode, because of $a=\sqrt{2}$. And it is not!
+
+
+

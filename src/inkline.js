@@ -218,10 +218,11 @@ function translationError(m,i) {
     throw objectThatDelegatesTo(fail, {errorPos: i, errorMsg: "Translation Error"})
 }
 
-function createTransformWrapper(f) {
+function createTransformWrapper(f,tex) {
     return function(source,block,outputElt) {
         html = f(source)
         outputElt.innerHTML = html
+        if(tex) { MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt]) }
         displayBlock(block)
     }
 }
@@ -270,7 +271,7 @@ function transformBlock(block) {
             try {
                 trafo = processOMeta(content)
                 if(typeof trafo == "function") {
-                    transformers[param] = createTransformWrapper(trafo)
+                    transformers[param] = createTransformWrapper(trafo,true)
                     console.log("New transformer for language " + param + " added to collection of transformers.")
                 }
             } catch(e) {
@@ -289,7 +290,7 @@ function transformBlock(block) {
     if(thetransformer == null) { 
         // if we don't have a custom transformer for the language, we
         // use the identity transform
-        thetransformer = createTransformWrapper(identityTransform)
+        thetransformer = createTransformWrapper(identityTransform,false)
     }
     try {
         thetransformer(content,block,outputElt)
