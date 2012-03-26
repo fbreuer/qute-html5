@@ -10,13 +10,17 @@ For more information, check the [Qute website](http://www.inkcode.net/qute).
 
 ## Installation
 
-Grab a zip archive for Windows or Mac OS X from github, extract it and run Qute!
-
-As of now, you need to compile Qute yourself if you are on Linux.
+Grab a zip archive for Windows, Mac OS X or Linux from github, extract it and run Qute!
 
 ## Compiling
 
-You need to install Chromeless and MathJax to compile Qute.  If `qute` is the name of the source directory, then you need to place Chromeless in `qute/chromeless` and MathJax in `qute/src/lib/mathjax`. You may want to delete the docs and image fonts from the MathJax distribution to speed compilation.
+The are compiling instructions for Linux. Adapt for Windows and OS X by reading the scripts mentioned below.
+
+Prerequisite: you need to have git installed on your system.
+
+1. Run <code>bootstrap.sh</code>. This will fetch chromeless and mathjax. You will only need to do that once before the first compile.
+2. Run <code>compile.sh</code>. This will build Qute from source. The first time this is run, xulrunner will be fetched, but this fetch will not happen on subsequent compiles.
+3. Run Qute, either by running <code>./chromeless/build/Qute/Qute</code> or <code>run.sh</code>.
 
 
 Copyright (C) 2011 Felix Breuer
