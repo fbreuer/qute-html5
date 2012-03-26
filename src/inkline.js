@@ -110,7 +110,7 @@ function activateLiveUpdate(block) {
     console.log("activating live update: " + block);
     source = $(block).find('.box-source').get(0);
     console.log("box-source: " + source);
-     $(block).find('.box-source').live('keyup.liveup paste.liveup', function(event) {
+     $(block).find('.box-source').on('keyup.liveup paste.liveup', function(event) {
         console.log("in liveupdate callback");
         if(transformTimer) {
             console.log("clearing Timeout");
@@ -119,7 +119,7 @@ function activateLiveUpdate(block) {
         }
         // window.setTimeout( function() {alert("foo");}, 1000);
         transformTimer = window.setTimeout(function() { console.log("transform callback"); transformBlock($(event.target).parent(".box-container")); }, 800);
-    }).live('blur.liveup', function(event) {
+    }).on('blur.liveup', function(event) {
         transformBlock($(event.target).parent(".box-container"));
     });
     console.log("activated live update");
@@ -132,7 +132,7 @@ function deactivateLiveUpdate(block) {
         window.clearTimeout(transformTimer);
         transformTimer = undefined;
     }
-    $(block).find('.box-source').die('keyup.liveup paste.liveup blur.liveup');
+    $(block).find('.box-source').off('keyup.liveup paste.liveup blur.liveup');
     console.log("deactivated live update.");
 }
 
