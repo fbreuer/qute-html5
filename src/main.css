@@ -27,6 +27,40 @@ code, pre {
     /* border: 1px solid white; */
 }
 
+.livepreview .display .box-source {
+    display: none;
+}
+
+.livepreview .display .box-output {
+    display: block;
+}
+
+.livepreview .editing .box-source {
+    display: block;
+}
+
+.livepreview .editing .box-output {
+    display: block;
+}
+
+.nopreview .display .box-source {
+    display: none;
+}
+
+.nopreview .display .box-output {
+    display: block;
+}
+
+.nopreview .editing .box-source {
+    display: block;
+}
+
+.nopreview .editing .box-output {
+    display: none;
+}
+
+
+
 .box-source {
     white-space: pre-wrap;
     outline: 0px solid transparent;

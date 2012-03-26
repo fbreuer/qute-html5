@@ -17,7 +17,7 @@
 */
 
 mozDirtyStr = "<br _moz='true' _moz_dirty=''/>";
-blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-output'></div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div></div>";
+blankBlockStr = "<div class='box-container editing'><div class='box-button' style='display:none;'>&gt;</div><div class='box-output'></div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div></div>";
 
 dir="C:\\Users\\Felix\\";
 
@@ -39,11 +39,12 @@ var filename = "";
 
 var twoColumnMode = false;
 var transformTimer = false;
-var livePreview = false;
-
-var editingInProgress = false;
 
 // UI
+
+function isLivePreview() {
+    return $("body").hasClass("livepreview");
+}
 
 function togglePanel() {
     $("#panelslider").slideToggle();
@@ -58,11 +59,12 @@ function toggleTwoColumnMode() {
 }
 
 function toggleLivePreview() {
-    livePreview = !livePreview;
+    $("body").toggleClass("livepreview");
+    $("body").toggleClass("nopreview");
     block = getActiveBlock();
     if(block) {
         console.log("in toggleLivePreview: active block is " + block);
-        if(livePreview) {
+        if(isLivePreview()) {
             $(block).find(".box-output").removeClass("hidden");            
             activateLiveUpdate(block);
         } else {
@@ -105,26 +107,33 @@ function setTwoColumnMode(b) {
 }
 
 function activateLiveUpdate(block) {
-    $(block).find('.box-source').live('keyup.liveup paste.liveup', function(event) { 
+    console.log("activating live update: " + block);
+    source = $(block).find('.box-source').get(0);
+    console.log("box-source: " + source);
+     $(block).find('.box-source').live('keyup.liveup paste.liveup', function(event) {
+        console.log("in liveupdate callback");
         if(transformTimer) {
             console.log("clearing Timeout");
             window.clearTimeout(transformTimer);
             transformTimer = undefined;
         }
         // window.setTimeout( function() {alert("foo");}, 1000);
-        transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 800);
+        transformTimer = window.setTimeout(function() { console.log("transform callback"); transformBlock($(event.target).parent(".box-container")); }, 800);
     }).live('blur.liveup', function(event) {
-        transformBlock($(event.target).parent(".box-container"))
+        transformBlock($(event.target).parent(".box-container"));
     });
+    console.log("activated live update");
 }
 
 function deactivateLiveUpdate(block) {
+    console.log("deactivating live update: " + block);
     if(transformTimer) {
         console.log("clearing Timeout");
         window.clearTimeout(transformTimer);
         transformTimer = undefined;
     }
     $(block).find('.box-source').die('keyup.liveup paste.liveup blur.liveup');
+    console.log("deactivated live update.");
 }
 
 function toggleScrollbar() {
@@ -148,8 +157,9 @@ function pickFile() {
 // BLOCK QUERIES
 
 function getActiveBlock() {
-    node = window.getSelection().getRangeAt(0).endContainer;
-    return $($(node).parents(".box-container").get(0));
+    //node = window.getSelection().getRangeAt(0).endContainer;
+    //return $($(node).parents(".box-container").get(0));
+    return $(".editing");
 }
 
 // BLOCK MANIPULATION
@@ -236,7 +246,7 @@ var transformers = {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
                           [function(){
                               outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
-                              displayBlock(block);
+                              //displayBlock(block);
                           }]);
     }
 };
@@ -264,7 +274,7 @@ function createTransformWrapper(f,tex) {
         html = f(source)
         outputElt.innerHTML = html
         if(tex) { MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt]) }
-        displayBlock(block)
+        //displayBlock(block)
     }
 }
 
@@ -345,32 +355,40 @@ function transformBlock(block) {
 }
 
 function transformAll() {
-    $(".box-container").each(function(i, e) { transformBlock(e); })
+    $(".box-container").each(function(i, e) { toggleBlock(e); })
 }
 
 function editBlock(block) {
-    editingInProgress = true;
+    console.log("in editBlock:")
+    $(".editing").each(function(i,e) {
+        if(e!=block) {
+            finishEditingBlock(e);
+        }
+    });
+    $(block).removeClass("display");
+    $(block).addClass("editing");
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
-    $(sourceElt).removeClass("hidden");
+    //$(sourceElt).removeClass("hidden");
     r = document.createRange();
     r.setStart($(sourceElt).get(0),0);
     r.collapse(true);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(r);
     $(sourceElt).focus();
-    if(livePreview) {
+    if(isLivePreview()) {
         activateLiveUpdate(block);
     } else {
-        $(outputElt).addClass("hidden");
+        //$(outputElt).addClass("hidden");
     }
+    console.log("editBlock completed.")
 }
 
 function displayBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
     $(outputElt).removeClass("hidden");
-    if(!editingInProgress) {
+    if($(block).hasClass("editing")) {
         console.log("displayBlock: hiding source");
         $(sourceElt).addClass("hidden");
     }
@@ -384,7 +402,7 @@ function blockInEditMode(block) {
 
 function toggleBlock(block) {
     console.log("toggleBlock");
-    if(editingInProgress) {
+    if($(block).hasClass("editing")) {
         finishEditingBlock(block);
     } else {
         editBlock(block);
@@ -392,17 +410,18 @@ function toggleBlock(block) {
 }
 
 function finishEditingBlock(block) {
-    if(livePreview) {
+    $(block).removeClass("editing");
+    $(block).addClass("display");
+    if(isLivePreview()) {
         deactivateLiveUpdate(block);
     }
     blocks = processBlock(block);
     console.log("toggleBlock: transforming " + blocks.length + " blocks");
-    // remove cursor: important to signal that we are no longer editing
-    window.getSelection().removeAllRanges();
-    editingInProgress = false;
+    $(block).removeClass("editing");
     for(i = 0; i < blocks.length; i++) {
         transformBlock(blocks[i]);
     }
+    window.getSelection().removeAllRanges();
  }
 
 
@@ -412,6 +431,7 @@ function closeCurrentBlockAndAddNext() {
     b = getActiveBlock();
     if(b != undefined) {
         nb = insertAfterBlock("",b);
+        console.log("closeCurrentBlockAndAddNext " + nb);
         toggleBlock(b);
         editBlock(nb);
     }
@@ -518,7 +538,8 @@ function splitParagraph() {
         b.remove();
         transformBlock(b1);
         transformBlock(b2);
-        if(txt1 == "") { editBlock(b1); } else { displayBlock(b1); }
+        finishEditingBlock(b1);
+        //if(txt1 == "") { editBlock(b1); } else { displayBlock(b1); }
         editBlock(b2);
     }
 }
@@ -561,7 +582,7 @@ function moveFocusToPreviousBlock() {
     block = getActiveBlock();
     prev = $(block).prev();
     if(prev.length > 0) {
-        finishEditingBlock(block);
+        //finishEditingBlock(block);
         editBlock(prev);
         // place caret at end of paragraph
         node = $(prev).find(".box-source").get(0).lastChild;
@@ -578,7 +599,8 @@ function moveFocusToNextBlock() {
     block = getActiveBlock();
     next = $(block).next();
     if(next.length > 0) {
-        finishEditingBlock(block);
+        //finishEditingBlock(block);
+        console.log("moveFocusToNextBlock")
         editBlock(next);
     }
 }
