@@ -17,7 +17,7 @@
 */
 
 mozDirtyStr = "<br _moz='true' _moz_dirty=''/>";
-blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div><div class='box-output'></div></div>";
+blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-output'></div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div></div>";
 
 dir="C:\\Users\\Felix\\";
 
@@ -39,6 +39,9 @@ var filename = "";
 
 var twoColumnMode = false;
 var transformTimer = false;
+var livePreview = false;
+
+var editingInProgress = false;
 
 // UI
 
@@ -52,6 +55,21 @@ function toggleFullscreen() {
 
 function toggleTwoColumnMode() {
     setTwoColumnMode(!twoColumnMode);
+}
+
+function toggleLivePreview() {
+    livePreview = !livePreview;
+    block = getActiveBlock();
+    if(block) {
+        console.log("in toggleLivePreview: active block is " + block);
+        if(livePreview) {
+            $(block).find(".box-output").removeClass("hidden");            
+            activateLiveUpdate(block);
+        } else {
+            $(block).find(".box-output").addClass("hidden");
+            deactivateLiveUpdate(block);
+        }
+    }
 }
 
 function setTwoColumnMode(b) {
@@ -84,6 +102,29 @@ function setTwoColumnMode(b) {
         }
         $('.box-source').die('keyup.twoColumn paste.twoColumn blur.twoColumn');
     }
+}
+
+function activateLiveUpdate(block) {
+    $(block).find('.box-source').live('keyup.liveup paste.liveup', function(event) { 
+        if(transformTimer) {
+            console.log("clearing Timeout");
+            window.clearTimeout(transformTimer);
+            transformTimer = undefined;
+        }
+        // window.setTimeout( function() {alert("foo");}, 1000);
+        transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 800);
+    }).live('blur.liveup', function(event) {
+        transformBlock($(event.target).parent(".box-container"))
+    });
+}
+
+function deactivateLiveUpdate(block) {
+    if(transformTimer) {
+        console.log("clearing Timeout");
+        window.clearTimeout(transformTimer);
+        transformTimer = undefined;
+    }
+    $(block).find('.box-source').die('keyup.liveup paste.liveup blur.liveup');
 }
 
 function toggleScrollbar() {
@@ -308,23 +349,31 @@ function transformAll() {
 }
 
 function editBlock(block) {
+    editingInProgress = true;
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
     $(sourceElt).removeClass("hidden");
-    $(outputElt).addClass("hidden");
     r = document.createRange();
     r.setStart($(sourceElt).get(0),0);
     r.collapse(true);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(r);
     $(sourceElt).focus();
+    if(livePreview) {
+        activateLiveUpdate(block);
+    } else {
+        $(outputElt).addClass("hidden");
+    }
 }
 
 function displayBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
-    $(sourceElt).addClass("hidden");
-    $(outputElt).removeClass("hidden");    
+    $(outputElt).removeClass("hidden");
+    if(!editingInProgress) {
+        console.log("displayBlock: hiding source");
+        $(sourceElt).addClass("hidden");
+    }
 }
 
 function blockInEditMode(block) {
@@ -335,7 +384,7 @@ function blockInEditMode(block) {
 
 function toggleBlock(block) {
     console.log("toggleBlock");
-    if(blockInEditMode(block)) {
+    if(editingInProgress) {
         finishEditingBlock(block);
     } else {
         editBlock(block);
@@ -343,13 +392,17 @@ function toggleBlock(block) {
 }
 
 function finishEditingBlock(block) {
+    if(livePreview) {
+        deactivateLiveUpdate(block);
+    }
     blocks = processBlock(block);
     console.log("toggleBlock: transforming " + blocks.length + " blocks");
+    // remove cursor: important to signal that we are no longer editing
+    window.getSelection().removeAllRanges();
+    editingInProgress = false;
     for(i = 0; i < blocks.length; i++) {
         transformBlock(blocks[i]);
     }
-    // remove cursor
-    window.getSelection().removeAllRanges();
  }
 
 
@@ -628,6 +681,9 @@ function handleKeydown(e) {
     // first handle special characters
     thestring = keyboardEventToString(e);
     switch(thestring) {
+        case "f4":
+            toggleLivePreview();
+            return false;
         case "ctrl+s":
         case "meta+s":
         case "f5":
