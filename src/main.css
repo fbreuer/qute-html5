@@ -36,6 +36,7 @@ code, pre {
 }
 
 .livepreview .editing .box-source {
+    margin-top: 0.8em;
     display: block;
 }
 
