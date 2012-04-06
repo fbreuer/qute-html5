@@ -37,7 +37,6 @@ cCProcess = require("child_process");
 
 var filename = "";
 
-var twoColumnMode = false;
 var transformTimer = false;
 
 // UI
@@ -54,10 +53,6 @@ function toggleFullscreen() {
     cFullscreen.toggle(window);
 }
 
-function toggleTwoColumnMode() {
-    setTwoColumnMode(!twoColumnMode);
-}
-
 function toggleLivePreview() {
     $("body").toggleClass("livepreview");
     $("body").toggleClass("nopreview");
@@ -71,38 +66,6 @@ function toggleLivePreview() {
             $(block).find(".box-output").addClass("hidden");
             deactivateLiveUpdate(block);
         }
-    }
-}
-
-function setTwoColumnMode(b) {
-    if(b) {
-        /* activate two column mode */
-        $("#column-mode").attr("href", "two-column.css");
-        twoColumnMode = true;
-        /* bind event handlers */
-        $('.box-source').live('keyup.twoColumn paste.twoColumn', function(event) { 
-            if(transformTimer) {
-                console.log("clearing Timeout");
-                window.clearTimeout(transformTimer);
-                transformTimer = undefined;
-            }
-            // window.setTimeout( function() {alert("foo");}, 1000);
-            transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 800);
-        }).live('blur.twoColumn', function(event) {
-            transformBlock($(event.target).parent(".box-container"))
-        });
-        
-    } else {
-        /* activate one column mode */
-        $("#column-mode").attr("href", "one-column.css");
-        twoColumnMode = false;
-        /* unbind event handlers */
-        if(transformTimer) {
-            console.log("clearing Timeout");
-            window.clearTimeout(transformTimer);
-            transformTimer = undefined;
-        }
-        $('.box-source').die('keyup.twoColumn paste.twoColumn blur.twoColumn');
     }
 }
 
@@ -716,9 +679,6 @@ function handleKeydown(e) {
             return false;
         case "f11":
             toggleFullscreen();
-            return false;
-        case "f12":
-            toggleTwoColumnMode();
             return false;
         case "esc":
             toggleMenu("root");
