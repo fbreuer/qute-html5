@@ -666,9 +666,6 @@ function handleKeydown(e) {
     // first handle special characters
     thestring = keyboardEventToString(e);
     switch(thestring) {
-        case "f4":
-            toggleLivePreview();
-            return false;
         case "ctrl+s":
         case "meta+s":
         case "f5":
@@ -679,6 +676,9 @@ function handleKeydown(e) {
             return false;
         case "f11":
             toggleFullscreen();
+            return false;
+        case "f12":
+            toggleLivePreview();
             return false;
         case "esc":
             toggleMenu("root");
