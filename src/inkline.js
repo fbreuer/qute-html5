@@ -17,7 +17,7 @@
 */
 
 mozDirtyStr = "<br _moz='true' _moz_dirty=''/>";
-blankBlockStr = "<div class='box-container'><div class='box-button' style='display:none;'>&gt;</div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div><div class='box-output'></div></div>";
+blankBlockStr = "<div class='box-container editing'><div class='box-button' style='display:none;'>&gt;</div><div class='box-output'></div><div class='box-source' contentEditable='true'>" + mozDirtyStr + "</div></div>";
 
 dir="C:\\Users\\Felix\\";
 
@@ -37,10 +37,13 @@ cCProcess = require("child_process");
 
 var filename = "";
 
-var twoColumnMode = false;
 var transformTimer = false;
 
 // UI
+
+function isLivePreview() {
+    return $("body").hasClass("livepreview");
+}
 
 function togglePanel() {
     $("#panelslider").slideToggle();
@@ -50,40 +53,50 @@ function toggleFullscreen() {
     cFullscreen.toggle(window);
 }
 
-function toggleTwoColumnMode() {
-    setTwoColumnMode(!twoColumnMode);
+function toggleLivePreview() {
+    $("body").toggleClass("livepreview");
+    $("body").toggleClass("nopreview");
+    block = getActiveBlock();
+    if(block) {
+        console.log("in toggleLivePreview: active block is " + block);
+        if(isLivePreview()) {
+            $(block).find(".box-output").removeClass("hidden");            
+            activateLiveUpdate(block);
+        } else {
+            $(block).find(".box-output").addClass("hidden");
+            deactivateLiveUpdate(block);
+        }
+    }
 }
 
-function setTwoColumnMode(b) {
-    if(b) {
-        /* activate two column mode */
-        $("#column-mode").attr("href", "two-column.css");
-        twoColumnMode = true;
-        /* bind event handlers */
-        $('.box-source').live('keyup.twoColumn paste.twoColumn', function(event) { 
-            if(transformTimer) {
-                console.log("clearing Timeout");
-                window.clearTimeout(transformTimer);
-                transformTimer = undefined;
-            }
-            // window.setTimeout( function() {alert("foo");}, 1000);
-            transformTimer = window.setTimeout(function() { transformBlock($(event.target).parent(".box-container")) }, 800);
-        }).live('blur.twoColumn', function(event) {
-            transformBlock($(event.target).parent(".box-container"))
-        });
-        
-    } else {
-        /* activate one column mode */
-        $("#column-mode").attr("href", "one-column.css");
-        twoColumnMode = false;
-        /* unbind event handlers */
+function activateLiveUpdate(block) {
+    console.log("activating live update: " + block);
+    source = $(block).find('.box-source').get(0);
+    console.log("box-source: " + source);
+     $(block).find('.box-source').on('keyup.liveup paste.liveup', function(event) {
+        console.log("in liveupdate callback");
         if(transformTimer) {
             console.log("clearing Timeout");
             window.clearTimeout(transformTimer);
             transformTimer = undefined;
         }
-        $('.box-source').die('keyup.twoColumn paste.twoColumn blur.twoColumn');
+        // window.setTimeout( function() {alert("foo");}, 1000);
+        transformTimer = window.setTimeout(function() { console.log("transform callback"); transformBlock($(event.target).parent(".box-container")); }, 800);
+    }).on('blur.liveup', function(event) {
+        transformBlock($(event.target).parent(".box-container"));
+    });
+    console.log("activated live update");
+}
+
+function deactivateLiveUpdate(block) {
+    console.log("deactivating live update: " + block);
+    if(transformTimer) {
+        console.log("clearing Timeout");
+        window.clearTimeout(transformTimer);
+        transformTimer = undefined;
     }
+    $(block).find('.box-source').off('keyup.liveup paste.liveup blur.liveup');
+    console.log("deactivated live update.");
 }
 
 function toggleScrollbar() {
@@ -107,8 +120,9 @@ function pickFile() {
 // BLOCK QUERIES
 
 function getActiveBlock() {
-    node = window.getSelection().getRangeAt(0).endContainer;
-    return $($(node).parents(".box-container").get(0));
+    //node = window.getSelection().getRangeAt(0).endContainer;
+    //return $($(node).parents(".box-container").get(0));
+    return $(".editing");
 }
 
 // BLOCK MANIPULATION
@@ -195,7 +209,7 @@ var transformers = {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt], // apply MathJax
                           [function(){
                               outputElt.innerHTML = converter.makeHtml(outputElt.innerHTML);  // apply Showdown
-                              displayBlock(block);
+                              //displayBlock(block);
                           }]);
     }
 };
@@ -223,7 +237,7 @@ function createTransformWrapper(f,tex) {
         html = f(source)
         outputElt.innerHTML = html
         if(tex) { MathJax.Hub.Queue(["Typeset",MathJax.Hub,outputElt]) }
-        displayBlock(block)
+        //displayBlock(block)
     }
 }
 
@@ -304,27 +318,43 @@ function transformBlock(block) {
 }
 
 function transformAll() {
-    $(".box-container").each(function(i, e) { transformBlock(e); })
+    $(".box-container").each(function(i, e) { toggleBlock(e); })
 }
 
 function editBlock(block) {
+    console.log("in editBlock:")
+    $(".editing").each(function(i,e) {
+        if(e!=block) {
+            finishEditingBlock(e);
+        }
+    });
+    $(block).removeClass("display");
+    $(block).addClass("editing");
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
-    $(sourceElt).removeClass("hidden");
-    $(outputElt).addClass("hidden");
+    //$(sourceElt).removeClass("hidden");
     r = document.createRange();
     r.setStart($(sourceElt).get(0),0);
     r.collapse(true);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(r);
     $(sourceElt).focus();
+    if(isLivePreview()) {
+        activateLiveUpdate(block);
+    } else {
+        //$(outputElt).addClass("hidden");
+    }
+    console.log("editBlock completed.")
 }
 
 function displayBlock(block) {
     sourceElt = $(block).find(".box-source").get(0);
     outputElt = $(block).find(".box-output").get(0);   
-    $(sourceElt).addClass("hidden");
-    $(outputElt).removeClass("hidden");    
+    $(outputElt).removeClass("hidden");
+    if($(block).hasClass("editing")) {
+        console.log("displayBlock: hiding source");
+        $(sourceElt).addClass("hidden");
+    }
 }
 
 function blockInEditMode(block) {
@@ -335,7 +365,7 @@ function blockInEditMode(block) {
 
 function toggleBlock(block) {
     console.log("toggleBlock");
-    if(blockInEditMode(block)) {
+    if($(block).hasClass("editing")) {
         finishEditingBlock(block);
     } else {
         editBlock(block);
@@ -343,12 +373,17 @@ function toggleBlock(block) {
 }
 
 function finishEditingBlock(block) {
+    $(block).removeClass("editing");
+    $(block).addClass("display");
+    if(isLivePreview()) {
+        deactivateLiveUpdate(block);
+    }
     blocks = processBlock(block);
     console.log("toggleBlock: transforming " + blocks.length + " blocks");
+    $(block).removeClass("editing");
     for(i = 0; i < blocks.length; i++) {
         transformBlock(blocks[i]);
     }
-    // remove cursor
     window.getSelection().removeAllRanges();
  }
 
@@ -359,6 +394,7 @@ function closeCurrentBlockAndAddNext() {
     b = getActiveBlock();
     if(b != undefined) {
         nb = insertAfterBlock("",b);
+        console.log("closeCurrentBlockAndAddNext " + nb);
         toggleBlock(b);
         editBlock(nb);
     }
@@ -465,7 +501,8 @@ function splitParagraph() {
         b.remove();
         transformBlock(b1);
         transformBlock(b2);
-        if(txt1 == "") { editBlock(b1); } else { displayBlock(b1); }
+        finishEditingBlock(b1);
+        //if(txt1 == "") { editBlock(b1); } else { displayBlock(b1); }
         editBlock(b2);
     }
 }
@@ -508,7 +545,7 @@ function moveFocusToPreviousBlock() {
     block = getActiveBlock();
     prev = $(block).prev();
     if(prev.length > 0) {
-        finishEditingBlock(block);
+        //finishEditingBlock(block);
         editBlock(prev);
         // place caret at end of paragraph
         node = $(prev).find(".box-source").get(0).lastChild;
@@ -525,7 +562,8 @@ function moveFocusToNextBlock() {
     block = getActiveBlock();
     next = $(block).next();
     if(next.length > 0) {
-        finishEditingBlock(block);
+        //finishEditingBlock(block);
+        console.log("moveFocusToNextBlock")
         editBlock(next);
     }
 }
@@ -640,7 +678,7 @@ function handleKeydown(e) {
             toggleFullscreen();
             return false;
         case "f12":
-            toggleTwoColumnMode();
+            toggleLivePreview();
             return false;
         case "esc":
             toggleMenu("root");
